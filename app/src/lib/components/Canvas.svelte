@@ -1,40 +1,51 @@
 <script lang="ts">
-	import { onMount, setContext, onDestroy } from 'svelte';
-	import { PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/env';
 
-	import type { RootContext } from '$lib/types/context';
+	import {
+		BoxGeometry,
+		Mesh,
+		MeshBasicMaterial,
+		PerspectiveCamera,
+		Scene,
+		WebGLRenderer
+	} from 'three';
 
-	import { ROOT_KEY } from '$lib/utils/key';
-
-	let canvasEl: HTMLCanvasElement;
-	let root: RootContext;
-
-	setContext(ROOT_KEY, {
-		getRoot: () => root
-	});
-
-	function resize() {
-		root.renderer.setSize(window.innerWidth, window.innerHeight);
-		root.camera.aspect = window.innerWidth / window.innerHeight;
-		root.camera.updateProjectionMatrix();
-	}
+	let el: HTMLCanvasElement;
 
 	onMount(() => {
-		root = {
-			scene: new Scene(),
-			camera: new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000),
-			renderer: new WebGLRenderer({ antialias: true, canvas: canvasEl })
-		};
+		if (browser) {
+			const scene = new Scene();
+			const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+			const geometry = new BoxGeometry();
+			const material = new MeshBasicMaterial({ color: 0x00ff00 });
+			const cube = new Mesh(geometry, material);
+			let renderer: WebGLRenderer;
+			scene.add(cube);
+			camera.position.z = 5;
 
-		resize();
-	});
+			const animate = () => {
+				requestAnimationFrame(animate);
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
+				renderer.render(scene, camera);
+			};
 
-	onDestroy(() => {
-		// TODO: cleanup
+			const resize = () => {
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+			};
+
+			const createScene = (el: HTMLCanvasElement) => {
+				renderer = new WebGLRenderer({ antialias: true, canvas: el });
+				resize();
+				animate();
+			};
+
+			createScene(el);
+		}
 	});
 </script>
 
-<svelte:window on:resize={resize} />
-<canvas bind:this={canvasEl}>
-	<slot />
-</canvas>
+<canvas bind:this={el} />

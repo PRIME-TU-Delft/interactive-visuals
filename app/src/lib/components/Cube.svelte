@@ -17,8 +17,8 @@
 	onMount(() => {
 		if (root) {
 			root.scene.add(cube);
+			console.log(root);
 		}
-		console.log(root);
 		// const ROOT = getContext<RootContext>(ROOT_KEY);
 		// ROOT.scene.add(cube);
 	});
