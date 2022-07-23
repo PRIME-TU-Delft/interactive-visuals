@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import { Color, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+	import { Color, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 	let el: HTMLCanvasElement;
@@ -12,6 +12,7 @@
 	let camera: PerspectiveCamera; // Camera as perspective camera
 	let renderer: WebGLRenderer; // Renderer as WebGL renderer
 	let controls: OrbitControls; // Orbit controls - to pan arround the scene
+	let camPos: Vector3 = new Vector3(3.5, 2.8, 3.5);
 
 	/**
 	 * Resize canvas if window size changes.
@@ -29,6 +30,10 @@
 	function animate() {
 		requestAnimationFrame(animate);
 		renderer.render(scene, camera);
+
+		if (camera && camera.position.x != camPos.x) {
+			camPos.copy(camera.position);
+		}
 	}
 
 	/**
