@@ -9,6 +9,7 @@
 		Scene,
 		WebGLRenderer
 	} from 'three';
+	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 	let el: HTMLCanvasElement;
 	let width: number;
@@ -17,6 +18,7 @@
 	const scene = new Scene();
 	let camera: PerspectiveCamera;
 	let renderer: WebGLRenderer;
+	let controls: OrbitControls;
 
 	function resize() {
 		if (!camera || !renderer) return;
@@ -38,6 +40,12 @@
 		// cube.rotation.x += 0.01;
 		// cube.rotation.y += 0.01;
 		renderer.render(scene, camera);
+		// controls.update();
+	}
+
+	function resetControls() {
+		camera.position.set(-0.041, 1.9, -1.21);
+		controls.update();
 	}
 
 	onMount(() => {
@@ -46,7 +54,9 @@
 
 		const createScene = (el: HTMLCanvasElement) => {
 			renderer = new WebGLRenderer({ antialias: true, canvas: el });
+			controls = new OrbitControls(camera, renderer.domElement);
 
+			// controls.update();
 			addCube();
 			resize();
 			animate();
@@ -58,3 +68,7 @@
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height} on:resize={resize} />
 <canvas bind:this={el} />
+
+<button style="position: absolute; z-index: 10; top: 1rem; left: 1rem" on:click={resetControls}>
+	reset
+</button>
