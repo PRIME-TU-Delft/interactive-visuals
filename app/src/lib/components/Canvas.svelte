@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import { PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+	import { Color, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 	let el: HTMLCanvasElement;
@@ -35,7 +35,7 @@
 	 * Reset camera position and rotation.
 	 */
 	function resetControls() {
-		camera.position.set(-0.041, 1.9, 5);
+		camera.position.set(3.5, 2.8, 3.5);
 		controls.update();
 	}
 
@@ -43,6 +43,7 @@
 		camera = new PerspectiveCamera(75, 1, 0.1, 1000);
 
 		const createScene = (el: HTMLCanvasElement) => {
+			scene.background = new Color('#334155');
 			renderer = new WebGLRenderer({ antialias: true, canvas: el });
 			controls = new OrbitControls(camera, renderer.domElement);
 
