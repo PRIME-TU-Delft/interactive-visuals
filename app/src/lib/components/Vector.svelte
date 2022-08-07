@@ -1,26 +1,41 @@
 <script lang="ts">
 	import { onMount, afterUpdate } from 'svelte';
 
-	import { BufferGeometry, Line, MeshBasicMaterial, Scene, Vector3 } from 'three';
+	import { BufferGeometry, Line, LineBasicMaterial, Scene, Vector3 } from 'three';
+
+	import getColor from '$lib/utils/getColor';
 
 	export let scene: Scene;
 
-	export let color: string = '#ff0000';
-	export let material = new MeshBasicMaterial({ color });
+	export let color: string = '';
+	export let material = new LineBasicMaterial({ color });
 	export let points = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
 
 	let geometry = new BufferGeometry().setFromPoints(points);
-	let line = new Line(geometry, material);
 
+	/**
+	 * Init the vector
+	 */
 	onMount(() => {
-		scene.add(line);
-		line.geometry.attributes.position.needsUpdate = true;
+		if (!color) {
+			const params = points.map((p) => [p.x, p.y, p.z, p.length()]).flat();
+
+			color = getColor(params);
+			material = new LineBasicMaterial({ color });
+			console.log(color);
+		}
+
+		let vec = new Line(geometry, material);
+		scene.add(vec);
+		vec.geometry.attributes.position.needsUpdate = true;
 	});
 
+	/**
+	 * When points are changed, update geometry.
+	 */
 	afterUpdate(() => {
-		geometry = new BufferGeometry().setFromPoints(points);
-		line = new Line(geometry, material);
-		console.log(points);
-		// line.updateMatrix();
+		geometry.setFromPoints(points);
+		//TODO: update color
+		//TODO: update material
 	});
 </script>

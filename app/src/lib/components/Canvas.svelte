@@ -51,6 +51,9 @@
 			scene.background = new Color('#334155');
 			renderer = new WebGLRenderer({ antialias: true, canvas: el });
 			controls = new OrbitControls(camera, renderer.domElement);
+			controls.enablePan = false;
+			controls.maxDistance = 10;
+			controls.minDistance = 1;
 
 			resetControls();
 			resize();
