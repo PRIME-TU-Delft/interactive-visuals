@@ -5,12 +5,12 @@
 	import getPseudoRandomColor, { colors } from '$lib/utils/getColor';
 
 	import { Vector3 } from 'three';
-	let a = 5;
+	let axisLength = 11;
 
 	let color = getPseudoRandomColor([Math.random()]);
 </script>
 
-<input type="number" bind:value={a} />
+<input type="number" bind:value={axisLength} />
 <select bind:value={color}>
 	{#each [...colors, '#frd'] as clr}
 		<option value={clr}>
@@ -21,7 +21,7 @@
 
 <Canvas let:scene>
 	<!-- <Cube {scene} /> -->
-	<Vector {scene} {color} points={[new Vector3(0, 5, 0), new Vector3(0, 0, a)]} />
+	<Vector {scene} {color} points={[new Vector3(0, 5, 0), new Vector3(0, 0, axisLength)]} />
 
-	<Axis {scene} />
+	<Axis {scene} {axisLength} />
 </Canvas>
