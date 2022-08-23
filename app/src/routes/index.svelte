@@ -6,12 +6,11 @@
 
 	import { Vector3 } from 'three';
 	let axisLength = 12;
-	let axisSpacing = 3;
+	let axisSpacing = 1;
 
 	let color = getPseudoRandomColor([Math.random()]);
 </script>
 
-<input type="number" bind:value={axisSpacing} />
 <select bind:value={axisLength}>
 	{#each new Array(15) as _, i}
 		<option value={i}>{i}</option>
