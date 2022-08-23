@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { onMount, afterUpdate } from 'svelte';
 
-	import { BufferGeometry, Line, LineBasicMaterial, Scene, Vector3 } from 'three';
+	import { BufferGeometry, Color, Line, LineBasicMaterial, Scene, Vector3 } from 'three';
 
 	import getColor from '$lib/utils/getColor';
 
 	export let scene: Scene;
 
 	export let color: string = '';
-	export let material = new LineBasicMaterial({ color });
-	export let points = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
+	export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
 
-	let geometry = new BufferGeometry().setFromPoints(points);
+	const geometry = new BufferGeometry().setFromPoints(points);
+	const material = new LineBasicMaterial();
 
 	/**
 	 * Init the vector
@@ -19,23 +19,31 @@
 	onMount(() => {
 		if (!color) {
 			const params = points.map((p) => [p.x, p.y, p.z, p.length()]).flat();
-
 			color = getColor(params);
-			material = new LineBasicMaterial({ color });
-			console.log(color);
 		}
 
-		let vec = new Line(geometry, material);
-		scene.add(vec);
+		material.color.set(color);
+
+		const vec = new Line(geometry, material);
 		vec.geometry.attributes.position.needsUpdate = true;
+		scene.add(vec);
 	});
 
 	/**
-	 * When points are changed, update geometry.
+	 * When points are changed, update geometry & material color.
 	 */
 	afterUpdate(() => {
-		geometry.setFromPoints(points);
-		//TODO: update color
-		//TODO: update material
+		// Reset geometry
+		geometry.setFromPoints(points); // TODO: check if geometry is updated
+
+		// Check if color is a valid css color accepts: [#fff, #f0f0f0, rgb(255, 255, 255), rgba(255, 255, 255, 1)] | rejects: [random, #rgba]
+		if (!CSS.supports('color', color)) return;
+
+		const newColor = new Color(color);
+
+		// Check if color is updated
+		if (!newColor.equals(material.color)) {
+			material.color.set(newColor);
+		}
 	});
 </script>
