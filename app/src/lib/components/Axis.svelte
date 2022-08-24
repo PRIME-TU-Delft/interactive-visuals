@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Line from '$lib/components/Line.svelte';
+	import Label from '$lib/components/Label.svelte';
 	import { Scene, Vector3 } from 'three';
 
 	export let scene: Scene;
-	// export let hideNumbers = false; //TODO
+	export let hideNumbers = false;
 	export let hideTicks = false;
 	export let axisLength = 10;
 	export let axisSpacing = 1;
@@ -64,5 +65,14 @@
 		<Line {scene} color="#EF4444" points={getPoints(indecator, tickSizes[1])} />
 		<Line {scene} color="#15803D" points={getPoints(indecator, tickSizes[1], 1)} />
 		<Line {scene} color="#0EA5E9" points={getPoints(indecator, tickSizes[1], 2)} />
+	{/each}
+{/if}
+
+<!-- Number indecators -->
+{#if !hideNumbers}
+	{#each smallIndecators as indecator}
+		<Label {scene} title={'' + indecator} position={new Vector3(indecator, -0.1, 0)} />
+		<Label {scene} title={'' + indecator} position={new Vector3(-0.1, indecator, 0)} />
+		<Label {scene} title={'' + indecator} position={new Vector3(0, -0.1, indecator)} />
 	{/each}
 {/if}

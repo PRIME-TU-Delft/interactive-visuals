@@ -2,7 +2,7 @@
 	import Axis from '$lib/components/Axis.svelte';
 	import Canvas from '$lib/components/Canvas.svelte';
 	import Vector from '$lib/components/Vector.svelte';
-	import getPseudoRandomColor, { colors } from '$lib/utils/getColor';
+	import getPseudoRandomColor from '$lib/utils/getColor';
 
 	import { Vector3 } from 'three';
 	let axisLength = 12;

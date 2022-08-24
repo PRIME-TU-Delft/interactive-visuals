@@ -12,6 +12,7 @@
 
 	const geometry = new BufferGeometry().setFromPoints(points);
 	const material = new LineBasicMaterial();
+	let vector: Line;
 
 	/**
 	 * Init the vector
@@ -24,9 +25,9 @@
 
 		material.color.set(color);
 
-		const vec = new Line(geometry, material);
-		vec.geometry.attributes.position.needsUpdate = true;
-		scene.add(vec);
+		vector = new Line(geometry, material);
+		vector.geometry.attributes.position.needsUpdate = true;
+		scene.add(vector);
 	});
 
 	/**
