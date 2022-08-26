@@ -4,9 +4,11 @@
 	import {
 		CatmullRomCurve3,
 		Color,
+		ConeGeometry,
 		DoubleSide,
 		Mesh,
 		MeshBasicMaterial,
+		Quaternion,
 		Scene,
 		TubeGeometry,
 		Vector3
@@ -19,22 +21,35 @@
 	export let direction: Vector3 = new Vector3(1, 0, 0);
 	export let length: number = 1;
 	export let radius: number = 0.1;
+	export let coneHeight: number = Math.max(0.5, length / 10);
+
+	const radiusSegments = 20; // number of segements on the tube -> higher is smoother
 
 	const path = new CatmullRomCurve3([
 		origin,
-		origin.clone().add(direction.clone().multiplyScalar(length))
+		origin.clone().add(direction.clone().multiplyScalar(length - coneHeight / 2))
 	]);
-	const geometry = new TubeGeometry(path, 1, radius, 10, false);
+	const tubeGeometry = new TubeGeometry(path, 1, radius, radiusSegments, false);
 	const material = new MeshBasicMaterial();
-	const mesh = new Mesh(geometry, material);
+	const tubeMesh = new Mesh(tubeGeometry, material);
 
-	console.log(color);
+	const geometry = new ConeGeometry(coneHeight == 0 ? 0 : radius * 2, coneHeight, radiusSegments);
+	const coneMesh = new Mesh(geometry, material);
 
 	onMount(() => {
-		material.color.set(color || '#ffffff');
+		material.color.set(color || '#ff00ff');
 		material.side = DoubleSide;
 
-		scene.add(mesh);
+		const endPoint = path.getPointAt(1);
+		const quatRotation = new Quaternion().setFromUnitVectors(
+			new Vector3(0, 1, 0),
+			endPoint.clone().sub(origin).normalize()
+		);
+		coneMesh.position.set(endPoint.x, endPoint.y, endPoint.z);
+		coneMesh.setRotationFromQuaternion(quatRotation);
+
+		scene.add(tubeMesh);
+		scene.add(coneMesh);
 	});
 
 	/**
@@ -53,6 +68,7 @@
 	});
 
 	onDestroy(() => {
-		scene.remove(mesh);
+		scene.remove(tubeMesh);
+		scene.remove(coneMesh);
 	});
 </script>
