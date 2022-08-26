@@ -19,7 +19,7 @@
 
 <Canvas let:scene>
 	<!-- <Cube {scene} /> -->
-	<Vector {scene} {color} points={[new Vector3(0, 5, 0), new Vector3(0, 0, -axisLength)]} />
+	<Vector {scene} {color} radius={0.2} direction={new Vector3(1, 1, 0)} length={3} />
 
 	<Axis {scene} {axisLength} {axisSpacing} />
 </Canvas>
