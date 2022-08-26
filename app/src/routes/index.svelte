@@ -18,14 +18,15 @@
 	{/each}
 </select>
 
-<Canvas let:scene>
+<Canvas enablePan let:scene>
 	<!-- <Cube {scene} /> -->
 	<Vector
 		{scene}
 		{color}
 		origin={new Vector3(0, 0, 0)}
-		direction={new Vector3(1, 1, 0)}
+		direction={new Vector3(-1, -1, -1)}
 		length={3}
+		showDeconstruction
 	/>
 
 	<Axis {scene} {axisLength} {axisSpacing} />

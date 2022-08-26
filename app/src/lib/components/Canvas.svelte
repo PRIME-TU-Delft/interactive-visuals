@@ -4,6 +4,8 @@
 	import { Color, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
+	export let enablePan = false;
+
 	let el: HTMLCanvasElement;
 	let width: number; // Width of scene
 	let height: number; // Height of scene
@@ -51,7 +53,7 @@
 			scene.background = new Color('#334155');
 			renderer = new WebGLRenderer({ antialias: true, canvas: el });
 			controls = new OrbitControls(camera, renderer.domElement);
-			controls.enablePan = false;
+			controls.enablePan = enablePan;
 			controls.maxDistance = 10;
 			controls.minDistance = 1;
 
