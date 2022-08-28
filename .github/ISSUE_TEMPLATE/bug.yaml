@@ -1,7 +1,7 @@
 name: Bug Report
 description: File a bug report
-title: "[Bug]: <title>"
-labels: [Bug", "Needs triage"]
+title: '[Bug]: <title>'
+labels: [Bug", 'Needs triage']
 body:
   - type: markdown
     attributes:
@@ -11,11 +11,11 @@ body:
     id: what-happened
     attributes:
       label: What happened?
-      description: "Please write down in steps to reproduce the bug."
+      description: 'Please write down in steps to reproduce the bug.'
       placeholder: Tell us what you see!
       value: |
-      "1. I ran `yarn install`"
-      "2. then, I ran `yarn build`"
+        1. I ran `yarn install`
+        2. then, I ran `yarn build`
     validations:
       required: true
   - type: dropdown
