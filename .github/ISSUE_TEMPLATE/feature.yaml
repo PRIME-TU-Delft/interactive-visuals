@@ -23,12 +23,12 @@ body:
     attributes:
       label: (sub-)steps to implement
       description: "Please write down a checklist to implement the feature."
-      placeholder: ""
+      placeholder: "Checklist to implement the feature."
       value: |
         - [ ] Create ...
         - [ ] Add ...
-        " - [ ] Test ..."
-    validation:
+        - [ ] Test ...
+    validations:
       required: true
   - type: textarea
     id: inspiration
