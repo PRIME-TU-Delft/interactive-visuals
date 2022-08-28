@@ -12,10 +12,8 @@ body:
     id: brief-description
     attributes:
       label: Brief description?
-      description: "Please write a short description of the feature. (2-3 sentences)"
-      placeholder: Motivate why this feature is needed!
-      value: |
-        Adding feature `X` to the project would be a good idea. Because...
+      description: "Please write a short description of the feature. (2-5 sentences)"
+      placeholder: Adding feature `X` to the project would be a good idea. Because...
     validations:
       required: true
   - type: textarea
@@ -38,8 +36,10 @@ body:
       placeholder: "You can drag and drop files here."
   - type: checkboxes
     attributes:
-      label: "This is not a duplicate "
+      label: "This is not a duplicate"
       description: "Please make sure this feature request is not a duplicate of an existing feature request. Furthermore, check if it does not contain spelling mistakes and has a clear descriptive title."
       options:
+        - label: This issue has a descriptive title
+          required: true
         - label: I agree this is not a duplicate issue. Thanks for contributing! 🎉
           required: true
