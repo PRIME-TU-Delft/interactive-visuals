@@ -19,15 +19,32 @@
 </select>
 
 <Canvas enablePan let:scene>
-	<!-- <Cube {scene} /> -->
+	<Vector
+		{scene}
+		{color}
+		origin={new Vector3(0, 1, 0)}
+		direction={new Vector3(-1, -1, -1)}
+		length={3}
+	/>
+
 	<Vector
 		{scene}
 		{color}
 		origin={new Vector3(0, 0, 0)}
-		direction={new Vector3(-1, -1, -1)}
-		length={3}
+		direction={new Vector3(1, 1, -1)}
+		length={2}
 		showDeconstruction
-	/>
+		let:endPosition
+	>
+		<Vector
+			{scene}
+			{color}
+			origin={endPosition}
+			direction={new Vector3(1, 2, 4)}
+			length={2}
+			showDeconstruction
+		/>
+	</Vector>
 
 	<Axis {scene} {axisLength} {axisSpacing} />
 </Canvas>

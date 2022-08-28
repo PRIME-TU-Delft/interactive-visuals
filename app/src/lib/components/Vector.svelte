@@ -21,7 +21,7 @@
 	export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
 	export let direction: Vector3 = new Vector3(1, 0, 0); // direction of vector
 	export let length: number = 1; // length of the vector + cone
-	export let radius: number = 0.1; // radius of the cone
+	export let radius: number = 0.05; // radius of the cone
 	export let coneHeight: number = Math.max(0.5, length / 10); // height of the cone
 	export let showDeconstruction: boolean = false; // show deconstruction of vector
 
