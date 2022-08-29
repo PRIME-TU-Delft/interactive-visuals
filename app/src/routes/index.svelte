@@ -2,13 +2,13 @@
 	import Axis from '$lib/components/Axis.svelte';
 	import Canvas from '$lib/components/Canvas.svelte';
 	import Vector from '$lib/components/Vector.svelte';
-	import getPseudoRandomColor from '$lib/utils/getColor';
+	import getRandomColor from '$lib/utils/getColor';
 
 	import { Vector3 } from 'three';
 	let axisLength = 12;
 	let axisSpacing = 1;
 
-	let color = getPseudoRandomColor([Math.random()]);
+	let color = getRandomColor();
 </script>
 
 <!-- select axis length from 1-15 -->
