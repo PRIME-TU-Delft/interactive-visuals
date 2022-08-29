@@ -3,7 +3,7 @@
 
 	import { BufferGeometry, Color, Line, LineBasicMaterial, Scene, Vector3 } from 'three';
 
-	import getColor from '$lib/utils/getColor';
+	import getRandomColor from '$lib/utils/getColor';
 
 	export let scene: Scene;
 
@@ -19,7 +19,7 @@
 	 */
 	onMount(() => {
 		// Set a randomColor if no color is set
-		color = color ?? getColor();
+		color = color ?? getRandomColor();
 
 		material.color.set(color);
 
