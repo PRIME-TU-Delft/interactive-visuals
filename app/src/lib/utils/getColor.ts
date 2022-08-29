@@ -1,25 +1,24 @@
 type ColorString = `#${string}`;
-type StringOrNumber = string | number;
 
-export const backgroundColors: ReadonlyArray<ColorString> = ['#1A1A1A', '#CFC7C0', '#E0E0E0'];
+export enum BackgroundColors {
+	dark = '#1A1A1A',
+	medium = '#CFC7C0',
+	light = '#E0E0E0'
+}
 
-export const colors: Readonly<ColorString>[] = [
-	'#CFC7C0',
-	'#FFCE2E',
-	'#7AB1E8',
-	'#F87089',
-	'#308167',
-	'#E15F55'
-];
+export enum PrimeColor {
+	grey = '#CFC7C0',
+	yellow = '#FFCE2E',
+	ultramarine = '#7AB1E8',
+	pink = '#F87089',
+	green = '#308167',
+	red = '#E15F55'
+}
 
-export default function getPseudoRandomColor(params?: StringOrNumber[]): ColorString {
-	let randomIndex = Math.round(Math.random() * colors.length);
+export default function getRandomColor(): ColorString {
+	const colors = Object.values(PrimeColor);
 
-	if (params && params.length) {
-		const concatParams = params.map((a) => a.toString()).join('');
-		const arng = Math.random();
+	const randomIndex = Math.round(Math.random() * colors.length);
 
-		randomIndex = Math.round(arng * colors.length);
-	}
 	return colors[randomIndex];
 }

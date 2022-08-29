@@ -1,49 +1,113 @@
 <script lang="ts">
-	import { onMount, afterUpdate } from 'svelte';
+	import { onMount, onDestroy, afterUpdate } from 'svelte';
 
-	import { BufferGeometry, Color, Line, LineBasicMaterial, Scene, Vector3 } from 'three';
-
-	import getColor from '$lib/utils/getColor';
+	import {
+		Color,
+		ConeGeometry,
+		DoubleSide,
+		LineCurve3,
+		Mesh,
+		MeshBasicMaterial,
+		Quaternion,
+		Scene,
+		TubeGeometry,
+		Vector3
+	} from 'three';
+	import Deconstruction from '$lib/components/Deconstruction.svelte';
+	import getRandomColor from '$lib/utils/getColor';
 
 	export let scene: Scene;
 
-	export let color: string = '';
-	export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
+	export let color: string = getRandomColor(); //Color of both cone and stem
+	export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
+	export let direction: Vector3 = new Vector3(1, 0, 0); // direction of vector
+	export let length: number = 1; // length of the vector + cone
+	export let radius: number = 0.05; // radius of the cone
+	export let coneHeight: number = Math.min(0.5, length / 10); // height of the cone
+	export let showDeconstruction: boolean = false; // show deconstruction of vector
 
-	const geometry = new BufferGeometry().setFromPoints(points);
-	const material = new LineBasicMaterial();
+	const RADIUS_SEGMENTS = 15; // number of segements on the tube -> higher is smoother
+	$: endPosition = origin.clone().add(direction.clone().normalize().multiplyScalar(length)); // very end of the vector
 
-	/**
-	 * Init the vector
-	 */
+	let tubeMesh: Mesh;
+	let coneMesh: Mesh;
+	const material = new MeshBasicMaterial();
+
+	function setup() {
+		if (length <= 0) return; // Do not draw this vector if its length is 0
+
+		const path = new LineCurve3(
+			origin,
+			origin.clone().add(
+				direction
+					.clone()
+					.normalize()
+					.multiplyScalar(length - coneHeight)
+			)
+		);
+
+		const tubeGeometry = new TubeGeometry(path, 1, radius, RADIUS_SEGMENTS, false);
+		const coneGeometry = new ConeGeometry(
+			coneHeight == 0 ? 0 : radius * 2,
+			coneHeight,
+			RADIUS_SEGMENTS
+		);
+
+		material.color.set(color || getRandomColor());
+		material.side = DoubleSide;
+
+		tubeMesh = new Mesh(tubeGeometry, material);
+		coneMesh = new Mesh(coneGeometry, material);
+
+		const endPoint = origin.clone().add(
+			direction
+				.clone()
+				.normalize()
+				.multiplyScalar(length - coneHeight / 2)
+		);
+		const quatRotation = new Quaternion().setFromUnitVectors(
+			new Vector3(0, 1, 0),
+			endPoint.clone().sub(origin).normalize()
+		);
+		coneMesh.position.set(endPoint.x, endPoint.y, endPoint.z);
+		coneMesh.setRotationFromQuaternion(quatRotation);
+
+		scene.add(tubeMesh);
+		scene.add(coneMesh);
+	}
+
 	onMount(() => {
-		if (!color) {
-			const params = points.map((p) => [p.x, p.y, p.z, p.length()]).flat();
-			color = getColor(params);
-		}
-
-		material.color.set(color);
-
-		const vec = new Line(geometry, material);
-		vec.geometry.attributes.position.needsUpdate = true;
-		scene.add(vec);
+		setup();
 	});
 
 	/**
 	 * When points are changed, update geometry & material color.
 	 */
 	afterUpdate(() => {
-		// Reset geometry
-		geometry.setFromPoints(points); // TODO: check if geometry is updated
+		scene.remove(tubeMesh);
+		scene.remove(coneMesh);
+		setup();
 
-		// Check if color is a valid css color accepts: [#fff, #f0f0f0, rgb(255, 255, 255), rgba(255, 255, 255, 1)] | rejects: [random, #rgba]
+		// 	// Check if color is a valid css color accepts: [#fff, #f0f0f0, rgb(255, 255, 255), rgba(255, 255, 255, 1)] | rejects: [random, #rgba]
 		if (!CSS.supports('color', color)) return;
-
 		const newColor = new Color(color);
 
 		// Check if color is updated
-		if (!newColor.equals(material.color)) {
+		if (material && !newColor.equals(material.color)) {
 			material.color.set(newColor);
 		}
 	});
+
+	onDestroy(() => {
+		scene.remove(tubeMesh);
+		scene.remove(coneMesh);
+	});
 </script>
+
+{#key endPosition}
+	{#if showDeconstruction}
+		<Deconstruction {scene} end={endPosition} />
+	{/if}
+{/key}
+
+<slot {endPosition} />

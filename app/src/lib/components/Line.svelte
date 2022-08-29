@@ -18,10 +18,8 @@
 	 * Init the vector
 	 */
 	onMount(() => {
-		if (!color) {
-			const params = points.map((p) => [p.x, p.y, p.z, p.length()]).flat();
-			color = getColor(params);
-		}
+		// Set a randomColor if no color is set
+		color = color ?? getColor();
 
 		material.color.set(color);
 
