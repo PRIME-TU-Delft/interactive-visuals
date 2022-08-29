@@ -21,9 +21,11 @@
 	 */
 	function resize() {
 		if (!camera || !renderer) return;
-		renderer.setSize(width, height);
+
 		camera.aspect = width / height;
 		camera.updateProjectionMatrix();
+
+		renderer.setSize(width, height);
 	}
 
 	/**
