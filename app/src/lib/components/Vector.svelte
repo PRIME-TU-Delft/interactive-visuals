@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, onDestroy, afterUpdate } from 'svelte';
+	import { onMount, onDestroy, afterUpdate, getContext } from 'svelte';
 
 	import {
 		Color,
@@ -9,14 +9,12 @@
 		Mesh,
 		MeshBasicMaterial,
 		Quaternion,
-		Scene,
 		TubeGeometry,
 		Vector3
 	} from 'three';
 	import Deconstruction from '$lib/components/Deconstruction.svelte';
 	import getRandomColor from '$lib/utils/getColor';
-
-	export let scene: Scene;
+	import { sceneKey, type SceneContext } from '$lib/utils/sceneKey';
 
 	export let color: string = getRandomColor(); //Color of both cone and stem
 	export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
@@ -25,6 +23,8 @@
 	export let radius: number = 0.05; // radius of the cone
 	export let coneHeight: number = Math.min(0.5, length / 10); // height of the cone
 	export let showDeconstruction: boolean = false; // show deconstruction of vector
+
+	const { scene } = getContext<SceneContext>(sceneKey);
 
 	const RADIUS_SEGMENTS = 15; // number of segements on the tube -> higher is smoother
 	$: endPosition = origin.clone().add(direction.clone().normalize().multiplyScalar(length)); // very end of the vector
@@ -106,7 +106,7 @@
 
 {#key endPosition}
 	{#if showDeconstruction}
-		<Deconstruction {scene} end={endPosition} />
+		<Deconstruction end={endPosition} />
 	{/if}
 {/key}
 

@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 
 	import { Color, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+	import { sceneKey } from '$lib/utils/sceneKey';
 
 	export let enablePan = false;
 
@@ -15,6 +16,11 @@
 	let renderer: WebGLRenderer; // Renderer as WebGL renderer
 	let controls: OrbitControls; // Orbit controls - to pan arround the scene
 	let camPos: Vector3 = new Vector3(3.5, 2.8, 3.5);
+
+	// Set context for all children to use the same scene
+	setContext(sceneKey, {
+		scene
+	});
 
 	/**
 	 * Resize canvas if window size changes.

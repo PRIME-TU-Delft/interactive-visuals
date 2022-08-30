@@ -1,13 +1,15 @@
 <script lang="ts">
-	import { onMount, onDestroy, beforeUpdate } from 'svelte';
-	import { Vector3, type Scene } from 'three';
-
+	import { onMount, onDestroy, beforeUpdate, getContext } from 'svelte';
+	import { Vector3 } from 'three';
 	import SpriteText from 'three-spritetext';
 
-	export let scene: Scene;
+	import { sceneKey, type SceneContext } from '$lib/utils/sceneKey';
+
 	export let title: string;
 	export let size: number = 0.1;
 	export let position: Vector3 = new Vector3(0, 0, 0);
+
+	const { scene } = getContext<SceneContext>(sceneKey);
 
 	let text: SpriteText;
 

@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { Vector3 } from 'three';
+
 	import Line from '$lib/components/Line.svelte';
 	import Label from '$lib/components/Label.svelte';
-	import { Scene, Vector3 } from 'three';
+
 	import { PrimeColor } from '$lib/utils/getColor';
 
-	export let scene: Scene;
 	export let hideNumbers = false;
 	export let hideTicks = false;
 	export let axisLength = 10;
@@ -39,17 +40,14 @@
 
 <!-- Main axis lines -->
 <Line
-	{scene}
 	color={PrimeColor.red}
 	points={[new Vector3(-1 * axisLength, 0, 0), new Vector3(axisLength, 0, 0)]}
 />
 <Line
-	{scene}
 	color={PrimeColor.green}
 	points={[new Vector3(0, -1 * axisLength, 0), new Vector3(0, axisLength, 0)]}
 />
 <Line
-	{scene}
 	color={PrimeColor.ultramarine}
 	points={[new Vector3(0, 0, -1 * axisLength), new Vector3(0, 0, axisLength)]}
 />
@@ -57,23 +55,23 @@
 <!-- Tick indecators -->
 {#if !hideTicks}
 	{#each largeIndecators as indecator}
-		<Line {scene} color={PrimeColor.red} points={getPoints(indecator, tickSizes[0])} />
-		<Line {scene} color={PrimeColor.green} points={getPoints(indecator, tickSizes[0], 1)} />
-		<Line {scene} color={PrimeColor.ultramarine} points={getPoints(indecator, tickSizes[0], 2)} />
+		<Line color={PrimeColor.red} points={getPoints(indecator, tickSizes[0])} />
+		<Line color={PrimeColor.green} points={getPoints(indecator, tickSizes[0], 1)} />
+		<Line color={PrimeColor.ultramarine} points={getPoints(indecator, tickSizes[0], 2)} />
 	{/each}
 
 	{#each smallIndecators as indecator}
-		<Line {scene} color={PrimeColor.red} points={getPoints(indecator, tickSizes[1])} />
-		<Line {scene} color={PrimeColor.green} points={getPoints(indecator, tickSizes[1], 1)} />
-		<Line {scene} color={PrimeColor.ultramarine} points={getPoints(indecator, tickSizes[1], 2)} />
+		<Line color={PrimeColor.red} points={getPoints(indecator, tickSizes[1])} />
+		<Line color={PrimeColor.green} points={getPoints(indecator, tickSizes[1], 1)} />
+		<Line color={PrimeColor.ultramarine} points={getPoints(indecator, tickSizes[1], 2)} />
 	{/each}
 {/if}
 
 <!-- Number indecators -->
 {#if !hideNumbers}
 	{#each smallIndecators as indecator}
-		<Label {scene} title={'' + indecator} position={new Vector3(indecator, -0.1, 0)} />
-		<Label {scene} title={'' + indecator} position={new Vector3(-0.1, indecator, 0)} />
-		<Label {scene} title={'' + indecator} position={new Vector3(0, -0.1, indecator)} />
+		<Label title={'' + indecator} position={new Vector3(indecator, -0.1, 0)} />
+		<Label title={'' + indecator} position={new Vector3(-0.1, indecator, 0)} />
+		<Label title={'' + indecator} position={new Vector3(0, -0.1, indecator)} />
 	{/each}
 {/if}

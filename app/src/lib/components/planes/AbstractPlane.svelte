@@ -1,26 +1,20 @@
 <script lang="ts">
 	import getRandomColor from '$lib/utils/getColor';
+
+	import { sceneKey, type SceneContext } from '$lib/utils/sceneKey';
 	import { PlaneSegments } from '$lib/utils/Segments';
 
-	import { onDestroy, onMount, beforeUpdate } from 'svelte';
+	import { onDestroy, onMount, beforeUpdate, getContext } from 'svelte';
 
-	import {
-		type Plane,
-		type Scene,
-		Mesh,
-		PlaneGeometry,
-		MeshBasicMaterial,
-		Vector3,
-		Color,
-		DoubleSide
-	} from 'three';
+	import { type Plane, Mesh, PlaneGeometry, MeshBasicMaterial, Vector3, DoubleSide } from 'three';
 
-	export let scene: Scene;
 	export let plane: Plane;
 	export let color = getRandomColor();
 	export let size = 10;
 	export let opacity = 0.8;
 	export let planeSegment = PlaneSegments.default();
+
+	const { scene } = getContext<SceneContext>(sceneKey);
 
 	let planeMesh: Mesh;
 

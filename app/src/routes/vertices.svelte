@@ -27,9 +27,8 @@
 
 <button on:click={toggleDirection}>toggle direction</button>
 
-<Canvas enablePan let:scene>
+<Canvas enablePan>
 	<Vector
-		{scene}
 		{color}
 		origin={new Vector3(0, 1, 0)}
 		direction={new Vector3(x, y, z)}
@@ -38,7 +37,6 @@
 	/>
 
 	<Vector
-		{scene}
 		origin={new Vector3(0, 0, 0)}
 		direction={new Vector3(1, 1, -1)}
 		length={2}
@@ -46,7 +44,6 @@
 		let:endPosition
 	>
 		<Vector
-			{scene}
 			color={PrimeColor.green}
 			origin={endPosition}
 			direction={new Vector3(1, 2, 4)}
@@ -55,5 +52,5 @@
 		/>
 	</Vector>
 
-	<Axis {scene} {axisLength} {axisSpacing} />
+	<Axis {axisLength} {axisSpacing} />
 </Canvas>
