@@ -1,5 +1,6 @@
 <script lang="ts">
 	import getRandomColor from '$lib/utils/getColor';
+	import { PlaneSegments } from '$lib/utils/Segments';
 
 	import { onDestroy, onMount, beforeUpdate } from 'svelte';
 
@@ -19,50 +20,53 @@
 	export let color = getRandomColor();
 	export let size = 10;
 	export let opacity = 0.8;
+	export let planeSegment = PlaneSegments.default();
 
 	let planeMesh: Mesh;
-	const geometry = new PlaneGeometry(size, size);
-	const material = new MeshBasicMaterial({ color });
 
-	onMount(() => {
-		planeMesh = new Mesh(geometry, material);
+	function setStripes() {
+		if (!planeMesh) return;
 
-		material.side = DoubleSide;
-		material.transparent = true;
-		material.opacity = opacity;
+		for (let i = 0; i < planeSegment.segments; i++) {
+			if (i % planeSegment.interval == planeSegment.offset) {
+				// A rectangle consists of two triangles --> 6 vertices
+				planeMesh.geometry.addGroup(i * 6, 6, 0);
+			}
+		}
+	}
 
+	function setup() {
+		let geometry: PlaneGeometry = new PlaneGeometry(size, size, planeSegment.segments, 1);
+
+		if (planeSegment.direction == 'vertical') {
+			new PlaneGeometry(size, size, 1, planeSegment.segments);
+		}
+
+		const materials = [
+			new MeshBasicMaterial({ color, transparent: true, opacity, side: DoubleSide })
+		];
+		planeMesh = new Mesh(geometry, materials);
+
+		// Set stripes | if segements is larger than 1
+		if (planeSegment.segments > 1) setStripes();
+
+		// Set position and rotation of plane
 		const coplanairPoint = new Vector3(0, 0, 0);
 		plane.coplanarPoint(coplanairPoint);
 		planeMesh.position.set(coplanairPoint.x, coplanairPoint.y, coplanairPoint.z);
 		planeMesh.quaternion.setFromUnitVectors(new Vector3(0, 0, 1), plane.normal);
 
+		// Add to scene
 		scene.add(planeMesh);
-	});
+	}
+
+	onMount(() => setup());
 
 	beforeUpdate(() => {
-		if (!planeMesh) return;
+		if (!planeMesh) return; // check if a plane exists
 
-		const coplanairPoint = new Vector3(0, 0, 0);
-		plane.coplanarPoint(coplanairPoint);
-
-		if (!planeMesh.position.equals(coplanairPoint)) {
-			planeMesh.position.set(coplanairPoint.x, coplanairPoint.y, coplanairPoint.z);
-		}
-
-		// TODO: check if rotation must be changed
-		planeMesh.quaternion.setFromUnitVectors(new Vector3(0, 0, 1), plane.normal);
-
-		// Check if color is a valid css color accepts: [#fff, #f0f0f0, rgb(255, 255, 255), rgba(255, 255, 255, 1)] | rejects: [random, #rgba]
-		if (!CSS.supports('color', color)) return;
-
-		const newColor = new Color(color);
-
-		// Check if color is updated
-		if (!newColor.equals(material.color)) {
-			material.color.set(newColor);
-		}
-
-		material.opacity = opacity;
+		scene.remove(planeMesh);
+		setup();
 	});
 
 	onDestroy(() => {

@@ -4,15 +4,17 @@
 	import { Vector3, Plane, Scene } from 'three';
 
 	import getRandomColor from '$lib/utils/getColor';
+	import { PlaneSegments } from '$lib/utils/Segments';
 
 	import AbstractPlane from '$lib/components/planes/AbstractPlane.svelte';
 
 	export let scene: Scene;
-	export let point: Vector3 = new Vector3(0, 1, 0);
+	export let point: Vector3 = new Vector3(0, 0, 0);
 	export let normal: Vector3 = new Vector3(1, 1, 1);
 	export let color = getRandomColor();
 	export let size = 10;
 	export let opacity = 0.8;
+	export let planeSegment = PlaneSegments.default();
 
 	let plane: Plane;
 
@@ -29,5 +31,7 @@
 </script>
 
 {#if plane}
-	<AbstractPlane {scene} {plane} {color} {size} {opacity} />
+	{#key point || normal}
+		<AbstractPlane {scene} {plane} {color} {size} {opacity} {planeSegment} />
+	{/key}
 {/if}

@@ -3,19 +3,34 @@
 	import Canvas from '$lib/components/Canvas.svelte';
 	import PlaneFromNormal from '$lib/components/planes/PlaneFromNormal.svelte';
 	import PlaneFromPoints from '$lib/components/planes/PlaneFromPoints.svelte';
+
 	import { PrimeColor } from '$lib/utils/getColor';
+	import { PlaneSegments } from '$lib/utils/Segments';
+	import { Vector3 } from 'three';
 
 	let axisLength = 12;
 	let axisSpacing = 1;
+
+	let segments = 32;
+	let x = 1;
 </script>
 
+<input type="number" min="0" bind:value={segments} />
+<input type="number" min="-10" bind:value={x} />
+
 <Canvas enablePan let:scene>
-	<PlaneFromPoints {scene} color={PrimeColor.green} />
-
-	<PlaneFromNormal {scene} color={PrimeColor.yellow} />
-
-	<!-- TODO: This plane is the same as the previous plane, but previous plane is not visible -->
-	<PlaneFromNormal {scene} color={PrimeColor.red} opacity={0.5} />
+	<PlaneFromNormal
+		{scene}
+		planeSegment={new PlaneSegments(segments, 0, 2)}
+		normal={new Vector3(1, 1, 1)}
+		color={PrimeColor.red}
+	/>
+	<PlaneFromNormal
+		{scene}
+		planeSegment={new PlaneSegments(segments, 1, 2)}
+		normal={new Vector3(x, 1, 1)}
+		color={PrimeColor.green}
+	/>
 
 	<Axis {scene} {axisLength} {axisSpacing} />
 </Canvas>
