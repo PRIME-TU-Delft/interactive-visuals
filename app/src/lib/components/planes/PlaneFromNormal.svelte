@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { beforeUpdate, onMount } from 'svelte';
 
-	import { Vector3, Plane, Scene } from 'three';
+	import { Vector3, Plane } from 'three';
 
 	import getRandomColor from '$lib/utils/getColor';
 	import { PlaneSegments } from '$lib/utils/Segments';
 
 	import AbstractPlane from '$lib/components/planes/AbstractPlane.svelte';
 
-	export let scene: Scene;
 	export let point: Vector3 = new Vector3(0, 0, 0);
 	export let normal: Vector3 = new Vector3(1, 1, 1);
 	export let color = getRandomColor();
@@ -32,6 +31,6 @@
 
 {#if plane}
 	{#key point || normal}
-		<AbstractPlane {scene} {plane} {color} {size} {opacity} {planeSegment} />
+		<AbstractPlane {plane} {color} {size} {opacity} {planeSegment} />
 	{/key}
 {/if}

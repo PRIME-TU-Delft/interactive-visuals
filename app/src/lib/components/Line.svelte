@@ -1,14 +1,15 @@
 <script lang="ts">
-	import { onMount, afterUpdate, onDestroy } from 'svelte';
+	import { onMount, afterUpdate, onDestroy, getContext } from 'svelte';
 
-	import { BufferGeometry, Color, Line, LineBasicMaterial, Scene, Vector3 } from 'three';
+	import { BufferGeometry, Color, Line, LineBasicMaterial, Vector3 } from 'three';
 
 	import getRandomColor from '$lib/utils/getColor';
-
-	export let scene: Scene;
+	import { sceneKey, type SceneContext } from '$lib/utils/sceneKey';
 
 	export let color: string = '';
 	export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
+
+	const { scene } = getContext<SceneContext>(sceneKey);
 
 	const geometry = new BufferGeometry().setFromPoints(points);
 	const material = new LineBasicMaterial();

@@ -1,16 +1,12 @@
 <script lang="ts">
-	import { onMount, onDestroy, beforeUpdate } from 'svelte';
-	import {
-		BoxGeometry,
-		EdgesGeometry,
-		LineDashedMaterial,
-		LineSegments,
-		Scene,
-		Vector3
-	} from 'three';
+	import { onMount, onDestroy, beforeUpdate, getContext } from 'svelte';
+	import { BoxGeometry, EdgesGeometry, LineDashedMaterial, LineSegments, Vector3 } from 'three';
+
+	import { sceneKey, type SceneContext } from '$lib/utils/sceneKey';
 
 	export let end: Vector3 = new Vector3(1, 1, 1); // direction of vector
-	export let scene: Scene;
+
+	const { scene } = getContext<SceneContext>(sceneKey);
 
 	let line: LineSegments;
 	const geometry = new BoxGeometry(end.x, end.y, end.z);
