@@ -14,6 +14,8 @@
 	export let opacity = 0.8;
 	export let planeSegment = PlaneSegments.default();
 
+	// Import scene from root Canvas.svelte. Context is used because store is too global.
+	// More info: https://svelte.dev/docs#run-time-svelte-setcontext
 	const { scene } = getContext<SceneContext>(sceneKey);
 
 	let planeMesh: Mesh;

@@ -6,6 +6,8 @@
 
 	export let end: Vector3 = new Vector3(1, 1, 1); // direction of vector
 
+	// Import scene from root Canvas.svelte. Context is used because store is too global.
+	// More info: https://svelte.dev/docs#run-time-svelte-setcontext
 	const { scene } = getContext<SceneContext>(sceneKey);
 
 	let line: LineSegments;
