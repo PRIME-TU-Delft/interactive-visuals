@@ -14,7 +14,7 @@
 	export let opacity = 0.8;
 	export let planeSegment = PlaneSegments.default();
 
-	const { scene } = getContext<SceneContext>(sceneKey);
+	const { scene } = getContext<SceneContext>(sceneKey); // import scene from Canvas.svelte
 
 	let planeMesh: Mesh;
 

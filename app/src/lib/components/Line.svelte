@@ -9,7 +9,7 @@
 	export let color: string = '';
 	export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
 
-	const { scene } = getContext<SceneContext>(sceneKey);
+	const { scene } = getContext<SceneContext>(sceneKey); // import scene from Canvas.svelte
 
 	const geometry = new BufferGeometry().setFromPoints(points);
 	const material = new LineBasicMaterial();

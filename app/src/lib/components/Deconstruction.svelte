@@ -6,7 +6,7 @@
 
 	export let end: Vector3 = new Vector3(1, 1, 1); // direction of vector
 
-	const { scene } = getContext<SceneContext>(sceneKey);
+	const { scene } = getContext<SceneContext>(sceneKey); // import scene from Canvas.svelte
 
 	let line: LineSegments;
 	const geometry = new BoxGeometry(end.x, end.y, end.z);

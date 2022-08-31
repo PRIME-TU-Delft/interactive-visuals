@@ -11,7 +11,7 @@
 	export let position: Vector3 = new Vector3(0, 0, 0);
 	export let strokeColor: string = '';
 
-	const { scene } = getContext<SceneContext>(sceneKey);
+	const { scene } = getContext<SceneContext>(sceneKey); // import scene from Canvas.svelte
 
 	let text: SpriteText;
 

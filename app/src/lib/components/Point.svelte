@@ -13,7 +13,7 @@
 	export let position: Vector3 = new Vector3(0, 0, 0); // position of the point and label
 	export let size: number = 0.25; // Size of dot and label
 
-	const { scene } = getContext<SceneContext>(sceneKey);
+	const { scene } = getContext<SceneContext>(sceneKey); // import scene from Canvas.svelte
 
 	const geometry = new BufferGeometry().setFromPoints([position]);
 	const material = new PointsMaterial({ color, size, alphaTest: 0.5, transparent: true });

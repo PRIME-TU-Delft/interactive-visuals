@@ -24,7 +24,7 @@
 	export let coneHeight: number = Math.min(0.5, length / 10); // height of the cone
 	export let showDeconstruction: boolean = false; // show deconstruction of vector
 
-	const { scene } = getContext<SceneContext>(sceneKey);
+	const { scene } = getContext<SceneContext>(sceneKey); // import scene from Canvas.svelte
 
 	const RADIUS_SEGMENTS = 15; // number of segements on the tube -> higher is smoother
 	$: endPosition = origin.clone().add(direction.clone().normalize().multiplyScalar(length)); // very end of the vector
