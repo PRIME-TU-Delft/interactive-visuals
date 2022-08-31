@@ -10,6 +10,7 @@
 	export let color = '#fff';
 	export let position: Vector3 = new Vector3(0, 0, 0);
 	export let strokeColor: string = '';
+	export let strokeWidth: number = 0;
 
 	// Import scene from root Canvas.svelte. Context is used because store is too global.
 	// More info: https://svelte.dev/docs#run-time-svelte-setcontext
@@ -20,10 +21,14 @@
 	onMount(() => {
 		text = new SpriteText(title, size, color);
 
+		if (strokeWidth) {
+			text.strokeWidth = strokeWidth;
+		}
+
 		// Set stroke color if specified
-		if (strokeColor && CSS.supports('color', strokeColor)) {
+		if (strokeColor && CSS.supports('color', strokeColor) && strokeColor != 'white') {
 			text.strokeColor = strokeColor;
-			text.strokeWidth = 2;
+			text.strokeWidth = strokeWidth || 2;
 		}
 
 		text.position.set(position.x, position.y, position.z);
