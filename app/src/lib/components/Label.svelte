@@ -18,7 +18,8 @@
 	onMount(() => {
 		text = new SpriteText(title, size, color);
 
-		if (strokeColor) {
+		// Set stroke color if specified
+		if (strokeColor && CSS.supports('color', strokeColor)) {
 			text.strokeColor = strokeColor;
 			text.strokeWidth = 2;
 		}
