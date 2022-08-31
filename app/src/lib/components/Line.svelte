@@ -9,7 +9,9 @@
 	export let color: string = '';
 	export let points: [Vector3, Vector3] = [new Vector3(5, 0, 0), new Vector3(5, 0, 0)];
 
-	const { scene } = getContext<SceneContext>(sceneKey); // import scene from Canvas.svelte
+	// Import scene from root Canvas.svelte. Context is used because store is too global.
+	// More info: https://svelte.dev/docs#run-time-svelte-setcontext
+	const { scene } = getContext<SceneContext>(sceneKey);
 
 	const geometry = new BufferGeometry().setFromPoints(points);
 	const material = new LineBasicMaterial();
