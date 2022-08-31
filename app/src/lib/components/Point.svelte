@@ -4,11 +4,12 @@
 
 	import { sceneKey, type SceneContext } from '$lib/utils/sceneKey';
 	import getRandomColor from '$lib/utils/getColor';
+	import { Label } from '$lib/utils/label';
 
-	import Label from '$lib/components/Label.svelte';
+	import SvelteLabel from '$lib/components/Label.svelte';
 	import { changeBufferPosition, changeColor } from '$lib/utils/changeAttributes';
 
-	export let label: string = ''; // label text
+	export let label = Label.default(); // label text
 	export let color: string = getRandomColor(); // color of point and label
 	export let position: Vector3 = new Vector3(0, 0, 0); // position of the point and label
 	export let size: number = 0.25; // Size of dot and label
@@ -45,11 +46,11 @@
 	});
 </script>
 
-{#if label}
-	<Label
-		title={label}
-		{size}
-		strokeColor={color}
+{#if label.title}
+	<SvelteLabel
+		title={label.title}
+		size={label.size}
+		strokeColor={label.strokeColor}
 		position={position.clone().add(new Vector3(size / 2, size / 2, 0))}
 	/>
 {/if}

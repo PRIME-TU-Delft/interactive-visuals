@@ -13,8 +13,10 @@
 		Vector3
 	} from 'three';
 	import Deconstruction from '$lib/components/Deconstruction.svelte';
+	import SvelteLabel from '$lib/components/Label.svelte';
 	import getRandomColor from '$lib/utils/getColor';
 	import { sceneKey, type SceneContext } from '$lib/utils/sceneKey';
+	import { Label } from '$lib/utils/label';
 
 	export let color: string = getRandomColor(); //Color of both cone and stem
 	export let origin: Vector3 = new Vector3(0, 0, 0); // origin of vector
@@ -23,6 +25,7 @@
 	export let radius: number = 0.05; // radius of the cone
 	export let coneHeight: number = Math.min(0.5, length / 10); // height of the cone
 	export let showDeconstruction: boolean = false; // show deconstruction of vector
+	export let label: Label = Label.default(); // label of vector
 
 	// Import scene from root Canvas.svelte. Context is used because store is too global.
 	// More info: https://svelte.dev/docs#run-time-svelte-setcontext
@@ -106,10 +109,20 @@
 	});
 </script>
 
-{#key endPosition}
-	{#if showDeconstruction}
+{#if showDeconstruction}
+	{#key endPosition}
 		<Deconstruction end={endPosition} />
-	{/if}
-{/key}
+	{/key}
+{/if}
+
+{#if label.title}
+	<SvelteLabel
+		title={label.title}
+		size={label.size}
+		strokeColor={label.strokeColor}
+		strokeWidth={label.strokeWidth}
+		position={endPosition.clone().add(new Vector3(radius, radius, 0))}
+	/>
+{/if}
 
 <slot {endPosition} />

@@ -3,6 +3,7 @@
 	import Canvas from '$lib/components/Canvas.svelte';
 	import Vector from '$lib/components/Vector.svelte';
 	import getRandomColor, { PrimeColor } from '$lib/utils/getColor';
+	import { Label } from '$lib/utils/label';
 
 	import { Vector3 } from 'three';
 	let axisLength = 12;
@@ -10,7 +11,7 @@
 
 	let color = getRandomColor();
 
-	let [x, y, z, l] = [1, 1, 0, 2];
+	let [x, y, z, l] = [-3, -1, -3, 2];
 
 	function toggleDirection() {
 		const negatedVector = new Vector3(x, y, z).negate();
@@ -33,7 +34,7 @@
 		origin={new Vector3(0, 1, 0)}
 		direction={new Vector3(x, y, z)}
 		length={l}
-		showDeconstruction
+		label={new Label('x').setVector().setStroke(color, 1)}
 	/>
 
 	<Vector
