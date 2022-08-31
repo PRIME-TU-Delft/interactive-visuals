@@ -5,7 +5,6 @@
 	// import PlaneFromPoints from '$lib/components/planes/PlaneFromPoints.svelte';
 
 	import { PrimeColor } from '$lib/utils/getColor';
-	import { PlaneSegments } from '$lib/utils/Segments';
 	import { Vector3 } from 'three';
 
 	let [x, y, z] = [1, 2, 3];
