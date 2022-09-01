@@ -58,7 +58,7 @@
 		camera = new PerspectiveCamera(75, 1, 0.1, 1000);
 
 		const createScene = (el: HTMLCanvasElement) => {
-			scene.background = new Color('#334155');
+			scene.background = new Color('#ffffff');
 			renderer = new WebGLRenderer({ antialias: true, canvas: el });
 			controls = new OrbitControls(camera, renderer.domElement);
 			controls.enablePan = enablePan;

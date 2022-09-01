@@ -11,21 +11,29 @@
 	let axisLength = 12;
 
 	let segments = 32;
-	let x = 1;
+	let x = 0;
+
+	$: v1 = new Vector3(x, 1, 1);
+
+	$: planeEqual = v1.equals(new Vector3(1, 1, 1));
+	$: planeInterval = planeEqual ? 2 : 1;
+	$: planeOffset = planeEqual ? 1 : 0;
 </script>
 
 <input type="number" min="0" bind:value={segments} />
-<input type="number" min="-10" bind:value={x} />
+<input type="range" min="-1" max="2" step="0.1" bind:value={x} />
 
-<Canvas enablePan>
+is Equal: {planeEqual}
+
+<Canvas>
 	<PlaneFromNormal
-		planeSegment={new PlaneSegments(segments, 0, 2)}
+		planeSegment={new PlaneSegments(segments, 0, planeInterval)}
 		normal={new Vector3(1, 1, 1)}
 		color={PrimeColor.red}
 	/>
 	<PlaneFromNormal
-		planeSegment={new PlaneSegments(segments, 1, 2)}
-		normal={new Vector3(x, 1, 1)}
+		planeSegment={new PlaneSegments(segments, planeOffset, planeInterval)}
+		normal={v1}
 		color={PrimeColor.green}
 	/>
 

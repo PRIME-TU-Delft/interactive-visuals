@@ -7,7 +7,7 @@
 
 	export let title: string;
 	export let size: number = 0.1;
-	export let color = '#fff';
+	export let color = '#000';
 	export let position: Vector3 = new Vector3(0, 0, 0);
 	export let strokeColor: string = '';
 	export let strokeWidth: number = 0;
