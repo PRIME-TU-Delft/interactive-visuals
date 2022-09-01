@@ -23,7 +23,7 @@
 	let point: Points;
 
 	onMount(() => {
-		const sprite = new TextureLoader().load('sprites/disc.png'); // Make material round
+		const sprite = new TextureLoader().load('/sprites/disc.png'); // Make material round
 		material.map = sprite;
 
 		point = new Points(geometry, material);
