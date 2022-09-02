@@ -68,24 +68,21 @@
 			(frustumSize * aspect) / 2,
 			frustumSize / 2,
 			frustumSize / -2,
-			0.1,
-			1000
+			-10, // black magic fuckery,
+			100
 		);
 
 		// const createScene = (el: HTMLCanvasElement) => {
-		scene.background = new Color('#334155');
+		scene.background = new Color('#fff');
 		renderer = new WebGLRenderer({ antialias: true, canvas: el });
 		controls = new OrbitControls(camera, renderer.domElement);
 		controls.enablePan = enablePan;
-		controls.maxDistance = 10;
-		controls.minDistance = 1;
+		controls.maxZoom = 20;
+		controls.minZoom = 1;
 
 		resetControls();
 		resize();
 		animate();
-		// };
-
-		// createScene(el);
 	});
 </script>
 
