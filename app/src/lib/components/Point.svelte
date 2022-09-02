@@ -1,15 +1,6 @@
 <script lang="ts">
 	import { getContext, onMount, beforeUpdate, onDestroy } from 'svelte';
-	import {
-		BufferGeometry,
-		Mesh,
-		MeshBasicMaterial,
-		Points,
-		PointsMaterial,
-		SphereGeometry,
-		TextureLoader,
-		Vector3
-	} from 'three';
+	import { Mesh, MeshBasicMaterial, SphereGeometry, Vector3 } from 'three';
 
 	import { sceneKey, type SceneContext } from '$lib/utils/sceneKey';
 	import getRandomColor from '$lib/utils/getColor';

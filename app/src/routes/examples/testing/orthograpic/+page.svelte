@@ -13,7 +13,7 @@
 	let points = new Array(20)
 		.fill(0)
 		.map(
-			(x) => new Vector3(Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5)
+			(_) => new Vector3(Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5)
 		);
 
 	function vectorToString(v: Vector3) {
