@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
 
-	import { Color, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three';
+	import { Color, OrthographicCamera, Scene, Vector3, WebGLRenderer } from 'three';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 	import { sceneKey } from '$lib/utils/sceneKey';
 
@@ -12,10 +12,12 @@
 	let height: number; // Height of scene
 
 	const scene = new Scene(); // Global THREE scene
-	let camera: PerspectiveCamera; // Camera as perspective camera
+	let camera: OrthographicCamera; // Camera as perspective camera
 	let renderer: WebGLRenderer; // Renderer as WebGL renderer
 	let controls: OrbitControls; // Orbit controls - to pan arround the scene
 	let camPos: Vector3 = new Vector3(3.5, 2.8, 3.5);
+
+	let frustumSize = 10; // Size of the frustum
 
 	// Set context for all children to use the same scene
 	setContext(sceneKey, {
@@ -26,12 +28,16 @@
 	 * Resize canvas if window size changes.
 	 */
 	function resize() {
-		if (!camera || !renderer) return;
+		const aspect = width / height / 2;
 
-		camera.aspect = width / height;
+		camera.left = (-frustumSize * aspect) / 2;
+		camera.right = (frustumSize * aspect) / 2;
+		camera.top = frustumSize / 2;
+		camera.bottom = -frustumSize / 2;
+
 		camera.updateProjectionMatrix();
 
-		renderer.setSize(width, height);
+		renderer.setSize(width / 2, height);
 	}
 
 	/**
@@ -39,6 +45,7 @@
 	 */
 	function animate() {
 		requestAnimationFrame(animate);
+
 		renderer.render(scene, camera);
 
 		if (camera && camera.position.x != camPos.x) {
@@ -55,30 +62,34 @@
 	}
 
 	onMount(() => {
-		camera = new PerspectiveCamera(75, 1, 0.1, 1000);
+		const aspect = width / height / 2;
+		camera = new OrthographicCamera(
+			(frustumSize * aspect) / -2,
+			(frustumSize * aspect) / 2,
+			frustumSize / 2,
+			frustumSize / -2,
+			-10, // black magic fuckery,
+			100
+		);
 
-		const createScene = (el: HTMLCanvasElement) => {
-			scene.background = new Color('#ffffff');
-			renderer = new WebGLRenderer({ antialias: true, canvas: el });
-			controls = new OrbitControls(camera, renderer.domElement);
-			controls.enablePan = enablePan;
-			controls.maxDistance = 10;
-			controls.minDistance = 1;
+		// const createScene = (el: HTMLCanvasElement) => {
+		scene.background = new Color('#fff');
+		renderer = new WebGLRenderer({ antialias: true, canvas: el });
+		controls = new OrbitControls(camera, renderer.domElement);
+		controls.enablePan = enablePan;
+		controls.maxZoom = 20;
+		controls.minZoom = 1;
 
-			resetControls();
-			resize();
-			animate();
-		};
-
-		createScene(el);
+		resetControls();
+		resize();
+		animate();
 	});
 </script>
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height} on:resize={resize} />
 <canvas bind:this={el} />
-<slot {scene} {camera} />
-
 <button class="resetButton" on:click={resetControls}> reset camera </button>
+<slot {camera} />
 
 <style>
 	.resetButton {

@@ -28,10 +28,10 @@
 	function resize() {
 		if (!camera || !renderer) return;
 
-		camera.aspect = width / height;
+		camera.aspect = width / height / 2;
 		camera.updateProjectionMatrix();
 
-		renderer.setSize(width, height);
+		renderer.setSize(width / 2, height);
 	}
 
 	/**
@@ -58,11 +58,11 @@
 		camera = new PerspectiveCamera(75, 1, 0.1, 1000);
 
 		const createScene = (el: HTMLCanvasElement) => {
-			scene.background = new Color('#ffffff');
+			scene.background = new Color('#fff');
 			renderer = new WebGLRenderer({ antialias: true, canvas: el });
 			controls = new OrbitControls(camera, renderer.domElement);
 			controls.enablePan = enablePan;
-			controls.maxDistance = 10;
+			controls.maxDistance = 15;
 			controls.minDistance = 1;
 
 			resetControls();
@@ -76,15 +76,15 @@
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height} on:resize={resize} />
 <canvas bind:this={el} />
-<slot {scene} {camera} />
-
 <button class="resetButton" on:click={resetControls}> reset camera </button>
+
+<slot {scene} {camera} />
 
 <style>
 	.resetButton {
 		position: absolute;
 		bottom: 1rem;
-		right: 1rem;
+		left: 1rem;
 		z-index: 1;
 		background: #fff;
 		border: 1px solid #000;
