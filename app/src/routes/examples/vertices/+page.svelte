@@ -28,7 +28,7 @@
 
 <button on:click={toggleDirection}>toggle direction</button>
 
-<Canvas enablePan>
+<Canvas>
 	<Vector
 		{color}
 		origin={new Vector3(0, 1, 0)}
