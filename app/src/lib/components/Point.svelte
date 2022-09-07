@@ -1,4 +1,8 @@
 <script lang="ts">
+	/***
+	 * This Compoenent is a 3d Point with an optional label
+	 * */
+
 	import { getContext, onMount, beforeUpdate, onDestroy } from 'svelte';
 	import { Mesh, MeshBasicMaterial, SphereGeometry, Vector3 } from 'three';
 
