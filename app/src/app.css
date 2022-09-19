@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+input {
+  @apply border border-white/0 rounded-md bg-white/50 p-1 m-2;
+}
+
+input:hover, input:focus {
+  @apply border-gray-300 
+}
+
+button {
+  @apply border border-white/0 rounded-md bg-white/50 p-1 m-2;
+}
+
+button:hover, button:focus {
+  @apply border-gray-300 bg-white/80
+}

@@ -4,8 +4,13 @@
 	import { Color, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 	import { sceneKey } from '$lib/utils/sceneKey';
+	import type { SliderArray } from '$lib/utils/slider';
+
+	import SvelteSlider from '$lib/components/Slider.svelte';
 
 	export let enablePan = false;
+	export let disableUI = false;
+	export let sliders: SliderArray = []; // Enfore with typescript 0 - 3 sliders
 
 	let el: HTMLCanvasElement;
 	let width: number; // Width of scene
@@ -17,9 +22,12 @@
 	let controls: OrbitControls; // Orbit controls - to pan arround the scene
 	let camPos: Vector3 = new Vector3(3.5, 2.8, 3.5);
 
+	$: sliderValues = sliders.map((s) => s.value);
+
 	// Set context for all children to use the same scene
 	setContext(sceneKey, {
-		scene
+		scene,
+		sliderValues
 	});
 
 	/**
@@ -47,9 +55,10 @@
 	}
 
 	/**
-	 * Reset camera position and rotation.
+	 * Reset camera position, rotation and sliders.
 	 */
-	function resetControls() {
+	function reset() {
+		sliders.forEach((slider) => slider.reset());
 		camera.position.set(3.5, 2.8, 3.5);
 		controls.update();
 	}
@@ -65,7 +74,7 @@
 			controls.maxDistance = 10;
 			controls.minDistance = 1;
 
-			resetControls();
+			reset();
 			resize();
 			animate();
 		};
@@ -76,21 +85,15 @@
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height} on:resize={resize} />
 <canvas bind:this={el} />
-<slot {scene} {camera} />
 
-<button class="resetButton" on:click={resetControls}> reset camera </button>
+<div class="fixed px-4 m-4 h-12 top-2 bg-slate-900 rounded flex justify-center items-center">
+	<slot {scene} {camera} {sliderValues} />
+</div>
 
-<style>
-	.resetButton {
-		position: absolute;
-		bottom: 1rem;
-		right: 1rem;
-		z-index: 1;
-		background: #fff;
-		border: 1px solid #000;
-		border-radius: 0.25rem;
-		padding: 0.5rem;
-		font-size: 1rem;
-		cursor: pointer;
-	}
-</style>
+{#if !disableUI && sliders.length > 0 && sliders.length <= 3}
+	<div class="fixed w-full px-4 pr-20 h-12 bg-slate-900 bottom-2 flex justify-end">
+		{#each sliders as slider}
+			<SvelteSlider bind:slider />
+		{/each}
+	</div>
+{/if}
