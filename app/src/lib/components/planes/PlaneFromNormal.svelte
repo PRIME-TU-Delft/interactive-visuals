@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
-	 * This component is defined by a normal vector and a center position. 
-	*/
+	 * This component is defined by a normal vector and a center position.
+	 */
 
 	import { beforeUpdate, onMount } from 'svelte';
 
@@ -22,14 +22,14 @@
 	let plane: Plane;
 
 	onMount(() => {
-		plane = new Plane().setFromNormalAndCoplanarPoint(normal, point);
+		plane = new Plane().setFromNormalAndCoplanarPoint(normal.normalize(), point);
 	});
 
 	beforeUpdate(() => {
 		if (!plane) return;
 
 		// TODO: check if this update is nessesary every time this component changes
-		plane.setFromNormalAndCoplanarPoint(normal, point);
+		plane.setFromNormalAndCoplanarPoint(normal.normalize(), point);
 	});
 </script>
 

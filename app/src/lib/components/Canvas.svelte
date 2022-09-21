@@ -1,17 +1,21 @@
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
+	import { mdiCog, mdiRestart } from '@mdi/js';
 
 	import { Color, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 	import { sceneKey } from '$lib/utils/sceneKey';
-	import type { SliderArray } from '$lib/utils/slider';
+	import type Slider from '$lib/utils/slider';
 
 	import SvelteSlider from '$lib/components/Slider.svelte';
+	import RoundButton from '$lib/components/RoundButton.svelte';
+	import ToggleFullscreen from '$lib/components/ToggleFullscreen.svelte';
 
 	export let enablePan = false;
 	export let disableUI = false;
-	export let sliders: SliderArray = []; // Enfore with typescript 0 - 3 sliders
+	export let sliders: readonly Slider[] = []; // Enfore with typescript 0 - 3 sliders
 
+	let sceneEl: HTMLDivElement;
 	let el: HTMLCanvasElement;
 	let width: number; // Width of scene
 	let height: number; // Height of scene
@@ -58,7 +62,7 @@
 	 * Reset camera position, rotation and sliders.
 	 */
 	function reset() {
-		sliders.forEach((slider) => slider.reset());
+		sliders = sliders.map((slider) => slider.reset());
 		camera.position.set(3.5, 2.8, 3.5);
 		controls.update();
 	}
@@ -84,16 +88,30 @@
 </script>
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height} on:resize={resize} />
-<canvas bind:this={el} />
+<div bind:this={sceneEl}>
+	<canvas bind:this={el} />
 
-<div class="fixed px-4 m-4 h-12 top-2 bg-slate-900 rounded flex justify-center items-center">
-	<slot {scene} {camera} {sliderValues} />
-</div>
-
-{#if !disableUI && sliders.length > 0 && sliders.length <= 3}
-	<div class="fixed w-full px-4 pr-20 h-12 bg-slate-900 bottom-2 flex justify-end">
-		{#each sliders as slider}
-			<SvelteSlider bind:slider />
-		{/each}
+	<!-- Explain panel -->
+	<div
+		class="fixed px-4 m-4 h-12 top-2 bg-slate-900 rounded flex justify-center items-center text-slate-100"
+	>
+		<slot {scene} {camera} {sliderValues} />
 	</div>
-{/if}
+
+	<!-- Slider Panel -->
+	{#if !disableUI && sliders.length > 0 && sliders.length <= 3}
+		<div class="fixed right-20 bottom-4 px-4 rounded h-12 bg-slate-900 flex justify-end">
+			{#each sliders as slider}
+				<SvelteSlider bind:slider />
+			{/each}
+		</div>
+	{/if}
+
+	<!-- Options panel -->
+	<div class="fixed right-4 bottom-4 w-12 flex flex-col gap-2">
+		<RoundButton icon={mdiCog} />
+		<RoundButton icon={mdiRestart} on:click={reset} />
+
+		<ToggleFullscreen {sceneEl} />
+	</div>
+</div>

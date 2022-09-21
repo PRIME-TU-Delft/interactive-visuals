@@ -17,6 +17,8 @@ export default class Slider {
 
 	reset() {
 		this.value = this.defaultValue;
+
+		return this;
 	}
 }
 

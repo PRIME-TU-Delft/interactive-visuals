@@ -28,7 +28,7 @@ export class PlaneSegments {
 	 * @returns new PlaneSegments(1, 2, 0);
 	 */
 	static default(): PlaneSegments {
-		return new PlaneSegments(1, 0, 2, 'horizontal');
+		return new PlaneSegments(2, 0, 1, 'horizontal');
 	}
 
 	clone(): PlaneSegments {
