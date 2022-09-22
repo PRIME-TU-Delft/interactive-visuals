@@ -10,4 +10,4 @@ RUN yarn install --immutable
 
 COPY --chown=node:node . .
 
-ENTRYPOINT [ "yarn", "dev", "--port", "8000" ]
+CMD [ "yarn", "dev", "--port", "8000" ]
