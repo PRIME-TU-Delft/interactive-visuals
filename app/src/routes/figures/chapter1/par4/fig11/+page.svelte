@@ -10,7 +10,7 @@
 	import { PlaneSegments } from '$lib/utils/Segments';
 
 	const normal = new Vector3(1, 3, 1).normalize();
-	const sliders = [new Slider(0, -5, 5, 1), new Slider(1, -5, 5, 1)];
+	const sliders = [new Slider(0, -5, 5, 1).red(), new Slider(1, -5, 5, 1).yellow()];
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>

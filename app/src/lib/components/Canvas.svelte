@@ -2,7 +2,14 @@
 	import { onMount, setContext } from 'svelte';
 	import { mdiCog, mdiRestart } from '@mdi/js';
 
-	import { Color, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three';
+	import {
+		Color,
+		PerspectiveCamera,
+		OrthographicCamera,
+		Scene,
+		Vector3,
+		WebGLRenderer
+	} from 'three';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 	import { sceneKey } from '$lib/utils/sceneKey';
 	import type Slider from '$lib/utils/slider';
@@ -21,10 +28,12 @@
 	let height: number; // Height of scene
 
 	const scene = new Scene(); // Global THREE scene
-	let camera: PerspectiveCamera; // Camera as perspective camera
+	let camera: PerspectiveCamera | OrthographicCamera; // Camera as perspective camera
 	let renderer: WebGLRenderer; // Renderer as WebGL renderer
 	let controls: OrbitControls; // Orbit controls - to pan arround the scene
 	let camPos: Vector3 = new Vector3(3.5, 2.8, 3.5);
+
+	const FRUSTRUM_SIZE = 10; // Size of the frustum
 
 	$: sliderValues = sliders.map((s) => s.value);
 
@@ -40,7 +49,18 @@
 	function resize() {
 		if (!camera || !renderer) return;
 
-		camera.aspect = width / height;
+		if (camera.type == 'PerspectiveCamera') {
+			// ensure camera is a perspective camera
+			camera.aspect = width / height;
+		} else {
+			// ensure camera is an orthographic camera
+			const aspect = width / height;
+			camera.left = (-FRUSTRUM_SIZE * aspect) / 2;
+			camera.right = (FRUSTRUM_SIZE * aspect) / 2;
+			camera.top = FRUSTRUM_SIZE / 2;
+			camera.bottom = -FRUSTRUM_SIZE / 2;
+		}
+
 		camera.updateProjectionMatrix();
 
 		renderer.setSize(width, height);
@@ -67,21 +87,50 @@
 		controls.update();
 	}
 
-	onMount(() => {
+	function setupPerspectiveCamera() {
 		camera = new PerspectiveCamera(75, 1, 0.1, 1000);
+	}
 
-		const createScene = (el: HTMLCanvasElement) => {
-			scene.background = new Color('#ffffff');
-			renderer = new WebGLRenderer({ antialias: true, canvas: el });
-			controls = new OrbitControls(camera, renderer.domElement);
-			controls.enablePan = enablePan;
-			controls.maxDistance = 10;
-			controls.minDistance = 1;
+	function setupOrthographicCamera() {
+		const aspect = width / height;
+		camera = new OrthographicCamera(
+			(FRUSTRUM_SIZE * aspect) / -2,
+			(FRUSTRUM_SIZE * aspect) / 2,
+			FRUSTRUM_SIZE / 2,
+			FRUSTRUM_SIZE / -2,
+			-10, // black magic fuckery,
+			100
+		);
+	}
 
-			reset();
-			resize();
-			animate();
-		};
+	function createScene(el: HTMLCanvasElement) {
+		scene.background = new Color('#ffffff');
+		renderer = new WebGLRenderer({ antialias: true, canvas: el });
+		controls = new OrbitControls(camera, renderer.domElement);
+		controls.enablePan = enablePan;
+		controls.maxDistance = 10;
+		controls.minDistance = 1;
+		controls.maxZoom = 20;
+		controls.minZoom = 1;
+
+		reset();
+		resize();
+		animate();
+	}
+
+	function togglePerspective() {
+		console.log(camera.type);
+		if (camera.type == 'PerspectiveCamera') {
+			setupOrthographicCamera();
+		} else {
+			setupPerspectiveCamera();
+		}
+
+		createScene(el);
+	}
+
+	onMount(() => {
+		setupPerspectiveCamera();
 
 		createScene(el);
 	});
@@ -109,9 +158,17 @@
 
 	<!-- Options panel -->
 	<div class="fixed right-4 bottom-4 w-12 flex flex-col gap-2">
-		<RoundButton icon={mdiCog} />
+		<RoundButton icon={mdiCog} on:click={togglePerspective} />
 		<RoundButton icon={mdiRestart} on:click={reset} />
 
-		<ToggleFullscreen {sceneEl} />
+		<div
+			on:click={() => {
+				// TODO: Bodge
+				console.log('hello');
+				setTimeout(() => resize(), 1000);
+			}}
+		>
+			<ToggleFullscreen {sceneEl} />
+		</div>
 	</div>
 </div>

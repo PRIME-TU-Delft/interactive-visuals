@@ -10,7 +10,7 @@
 	import Slider from '$lib/utils/slider';
 	import { PlaneSegments } from '$lib/utils/Segments';
 
-	let sliders = [new Slider(0, -1, 1, 0.2), new Slider(1, -1, 1, 0.2)] as const;
+	let sliders = [new Slider(0, -1, 1, 0.2).red(), new Slider(1, -1, 1, 0.2).yellow()] as const;
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>

@@ -11,7 +11,7 @@
 
 	const normal = new Vector3(1, 3, 1).normalize();
 
-	let sliders = [new Slider(0, -5, 5, 1), new Slider(0, -5, 5, 1)] as const;
+	let sliders = [new Slider(0, -5, 5, 1).red(), new Slider(0, -5, 5, 1).yellow()] as const;
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>
