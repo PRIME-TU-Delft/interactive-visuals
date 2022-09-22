@@ -10,4 +10,11 @@
 	max={slider.max}
 	step={slider.step}
 	bind:value={slider.value}
+	style="--color: {slider.color}"
 />
+
+<style>
+	input {
+		accent-color: var(--color);
+	}
+</style>

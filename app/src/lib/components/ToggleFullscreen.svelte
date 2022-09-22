@@ -24,8 +24,6 @@
 	}
 
 	onMount(() => {
-		if (sceneEl == null) return;
-
 		fullscreenSupport = !!(
 			document.fullscreenEnabled ||
 			document.webkitFullscreenEnabled || // this is for cursed Safari
