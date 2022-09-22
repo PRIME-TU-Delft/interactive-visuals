@@ -9,5 +9,8 @@ COPY --chown=node:node ./yarn.lock .
 RUN yarn install --immutable
 
 COPY --chown=node:node . .
+RUN yarn build
 
-CMD [ "yarn", "dev", "--port", "8000" ]
+
+FROM nginx:alpine
+COPY --from=0 /app/build /usr/share/nginx/html
