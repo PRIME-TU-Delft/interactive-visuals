@@ -21,14 +21,14 @@
 	}
 </script>
 
-<input type="number" name="x" bind:value={x} />
-<input type="number" name="y" bind:value={y} />
-<input type="number" name="z" bind:value={z} />
-<input type="number" min="0" name="l" bind:value={l} />
-
-<button on:click={toggleDirection}>toggle direction</button>
-
 <Canvas>
+	<input type="number" name="x" bind:value={x} />
+	<input type="number" name="y" bind:value={y} />
+	<input type="number" name="z" bind:value={z} />
+	<input type="number" min="0" name="l" bind:value={l} />
+
+	<button on:click={toggleDirection}>toggle direction</button>
+
 	<Vector
 		{color}
 		origin={new Vector3(0, 1, 0)}
