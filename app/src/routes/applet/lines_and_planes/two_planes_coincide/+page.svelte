@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Vector3 } from 'three';
+	import type { PageData } from './$types';
 
 	import Axis from '$lib/components/Axis.svelte';
 	import Canvas from '$lib/components/Canvas.svelte';
@@ -9,13 +10,18 @@
 	import Slider from '$lib/utils/slider';
 	import { PlaneSegments } from '$lib/utils/Segments';
 
+	export let data: PageData;
+
 	const normal = new Vector3(1, 3, 1).normalize();
 
 	let sliders = [new Slider(0, -5, 5, 1).red(), new Slider(0, -5, 5, 1).yellow()] as const;
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>
-	<div>Fig 13: Two planes that coincide.</div>
+	{#if data.figure}
+		<div>Figure {data.figure}</div>
+	{/if}
+	<div>Two planes that coincide.</div>
 
 	{#if y !== x}
 		<!-- Planes are not striped -->

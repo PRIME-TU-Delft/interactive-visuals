@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Vector3 } from 'three';
+	import type { PageData } from './$types';
 
 	import Axis from '$lib/components/Axis.svelte';
 	import Canvas from '$lib/components/Canvas.svelte';
@@ -10,12 +11,16 @@
 	import Slider from '$lib/utils/slider';
 	import { PlaneSegments } from '$lib/utils/Segments';
 
+	export let data: PageData;
+
 	let sliders = [new Slider(0, -1, 1, 0.2).red(), new Slider(1, -1, 1, 0.2).yellow()] as const;
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>
-	<!-- TODO: pass fig-number via url -->
-	<div>Figure 12: Two planes with a line of intersection.</div>
+	{#if data.figure}
+		<div>Figure {data.figure}</div>
+	{/if}
+	<div>Two planes with a line of intersection.</div>
 
 	<Vector
 		color={PrimeColor.ultramarine}
