@@ -103,21 +103,7 @@
 		);
 	}
 
-	function createScene(el: HTMLCanvasElement) {
-		scene.background = new Color('#ffffff');
-		renderer = new WebGLRenderer({ antialias: true, canvas: el });
-		controls = new OrbitControls(camera, renderer.domElement);
-		controls.enablePan = enablePan;
-		controls.maxDistance = 10;
-		controls.minDistance = 1;
-		controls.maxZoom = 20;
-		controls.minZoom = 1;
-
-		reset();
-		resize();
-		animate();
-	}
-
+	// Switch between perspective and orthographic camera
 	function togglePerspective() {
 		console.log(camera.type);
 		if (camera.type == 'PerspectiveCamera') {
@@ -126,11 +112,26 @@
 			setupPerspectiveCamera();
 		}
 
-		createScene(el);
+		resize();
 	}
 
 	onMount(() => {
 		setupPerspectiveCamera();
+
+		function createScene(el: HTMLCanvasElement) {
+			scene.background = new Color('#ffffff');
+			renderer = new WebGLRenderer({ antialias: true, canvas: el });
+			controls = new OrbitControls(camera, renderer.domElement);
+			controls.enablePan = enablePan;
+			controls.maxDistance = 10;
+			controls.minDistance = 1;
+			controls.maxZoom = 20;
+			controls.minZoom = 1;
+
+			reset();
+			resize();
+			animate();
+		}
 
 		createScene(el);
 	});
