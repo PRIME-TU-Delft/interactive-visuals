@@ -6,13 +6,13 @@
 	import { onMount } from 'svelte';
 
 	export let sceneEl: HTMLElement | null = null;
-	export let resize: () => void = () => {};
+	export let resize: () => void;
 
 	let isFullscreen: boolean = false; // If window is fullscreen
 
 	let fullscreenSupport = false;
 
-	function toggleFullscreen(event: Event) {
+	function toggleFullscreen() {
 		if (!fullscreenSupport || !sceneEl) return;
 
 		if (isFullscreen) {
