@@ -120,7 +120,6 @@
 
 	// Switch between perspective and orthographic camera
 	function togglePerspective() {
-		console.log(camera.type);
 		if (camera.type == 'PerspectiveCamera') {
 			setupOrthographicCamera();
 		} else {
@@ -143,7 +142,7 @@
 
 	<!-- Explain panel -->
 	<div
-		class="fixed px-4 m-4 h-12 top-2 bg-slate-900 rounded flex justify-center items-center text-slate-100"
+		class="fixed px-4 m-4 h-12 top-2 bg-slate-900 rounded flex gap-2 justify-center items-center text-slate-100"
 	>
 		<slot {scene} {camera} {sliderValues} />
 	</div>
@@ -162,14 +161,6 @@
 		<RoundButton icon={mdiCog} on:click={togglePerspective} />
 		<RoundButton icon={mdiRestart} on:click={reset} />
 
-		<div
-			on:click={() => {
-				// TODO: Bodge
-				console.log('hello');
-				setTimeout(() => resize(), 1000);
-			}}
-		>
-			<ToggleFullscreen {sceneEl} />
-		</div>
+		<ToggleFullscreen {resize} {sceneEl} />
 	</div>
 </div>

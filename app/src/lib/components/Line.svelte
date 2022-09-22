@@ -36,7 +36,7 @@
 	 */
 	afterUpdate(() => {
 		// Reset geometry
-		geometry.setFromPoints(points); // TODO: check if geometry is updated
+		geometry.setFromPoints(points);
 
 		// Check if color is a valid css color accepts: [#fff, #f0f0f0, rgb(255, 255, 255), rgba(255, 255, 255, 1)] | rejects: [random, #rgba]
 		if (!CSS.supports('color', color)) return;

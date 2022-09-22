@@ -57,7 +57,6 @@ export function changeBufferPosition(geometry: BufferGeometry, newPoints: Vector
 
 	// Check if position array is the same as newPoints array
 	// if they are the same -> do not change anything
-	console.log(positionArray.length / 3, newPoints.length);
 	if (positionArray.length / 3 == newPoints.length) {
 		for (let i = 0; i < newPoints.length; i++) {
 			const p = new Vector3(

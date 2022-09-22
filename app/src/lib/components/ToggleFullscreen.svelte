@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 
 	export let sceneEl: HTMLElement | null = null;
+	export let resize: () => void = () => {};
 
 	let isFullscreen: boolean = false; // If window is fullscreen
 
@@ -15,12 +16,25 @@
 		if (!fullscreenSupport || !sceneEl) return;
 
 		if (isFullscreen) {
-			document.exitFullscreen();
-		} else if (event.target) {
-			console.log('Put whole document in fullscreen');
-			sceneEl.requestFullscreen();
-			// TODO: add moz, IE and safari support
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			} else if (document.webkitExitFullscreen) {
+				isFullscreen = false;
+				document.webkitExitFullscreen();
+			}
+
+			return resize();
 		}
+
+		if (sceneEl.requestFullscreen) {
+			sceneEl.requestFullscreen();
+		} else if (sceneEl.webkitRequestFullScreen) {
+			isFullscreen = true;
+			sceneEl?.webkitRequestFullScreen();
+			setTimeout(() => resize(), 1000);
+		}
+
+		resize();
 	}
 
 	onMount(() => {
