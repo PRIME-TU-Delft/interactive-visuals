@@ -18,7 +18,7 @@ jobs:
           cache: yarn
           cache-dependency-path: app/yarn.lock
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Run ESLint
         run: yarn lint
 
@@ -36,6 +36,6 @@ jobs:
           cache: yarn
           cache-dependency-path: app/yarn.lock
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Run prettier
         run: yarn checkfmt

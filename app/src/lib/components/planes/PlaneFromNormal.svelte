@@ -1,7 +1,7 @@
 <script lang="ts">
 	/**
-	 * This component is defined by a normal vector and a center position. 
-	*/
+	 * This component is defined by a normal vector and a center position.
+	 */
 
 	import { beforeUpdate, onMount } from 'svelte';
 
