@@ -14,13 +14,15 @@
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>
-	<div>Fig 12: Two planes with a line of intersection.</div>
+	<!-- TODO: pass fig-number via url -->
+	<div>Figure 12: Two planes with a line of intersection.</div>
 
 	<Vector
 		color={PrimeColor.ultramarine}
 		length={10}
 		origin={new Vector3(0, -3.5, 3.5)}
 		direction={new Vector3(0, 1, -1)}
+		coneHeight={0}
 	/>
 
 	{#if y !== x}

@@ -14,9 +14,10 @@
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>
-	<div>Fig 11: Two planes without a common point in common.</div>
+	<!-- TODO: pass fig-number via url -->
+	<div>Figure 11: Two planes without a common point in common.</div>
 
-	<!-- TODO: make colliding planes -->
+	<!-- TODO: make colliding planes auto detected -->
 	{#if y !== x}
 		<!-- Planes are not striped -->
 		<PlaneFromNormal point={new Vector3(0, x, 0)} {normal} color={PrimeColor.red} />
