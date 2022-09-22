@@ -20,12 +20,11 @@
 	$: planeOffset = planeEqual ? 1 : 0;
 </script>
 
-<input type="number" min="0" bind:value={segments} />
-<input type="range" min="-1" max="2" step="0.1" bind:value={x} />
-
-is Equal: {planeEqual}
-
 <Canvas>
+	<input type="number" min="0" bind:value={segments} />
+	<input type="range" min="-1" max="2" step="0.1" bind:value={x} />
+	is Equal: {planeEqual}
+
 	<PlaneFromNormal
 		planeSegment={new PlaneSegments(segments, 0, planeInterval)}
 		normal={new Vector3(1, 1, 1)}

@@ -36,7 +36,9 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@mdi/js": "^7.0.96",
 		"@types/three": "^0.142.0",
+		"mdi-svelte-ts": "0.0.4",
 		"three": "^0.144.0",
 		"three-spritetext": "^1.6.5"
 	}
