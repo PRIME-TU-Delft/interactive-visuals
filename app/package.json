@@ -36,6 +36,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sveltejs/adapter-static": "^1.0.0-next.43",
 		"@mdi/js": "^7.0.96",
 		"@types/three": "^0.142.0",
 		"mdi-svelte-ts": "0.0.4",
