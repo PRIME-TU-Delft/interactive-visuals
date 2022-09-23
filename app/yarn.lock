@@ -1084,6 +1084,11 @@ function-bind@^1.1.1:
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
+fuse.js@^6.6.2:
+  version "6.6.2"
+  resolved "https://registry.yarnpkg.com/fuse.js/-/fuse.js-6.6.2.tgz#fe463fed4b98c0226ac3da2856a415576dc9a111"
+  integrity sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==
+
 gauge@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/gauge/-/gauge-3.0.2.tgz#03bf4441c044383908bcfa0656ad91803259b395"
@@ -1341,10 +1346,12 @@ make-dir@^3.1.0:
   dependencies:
     semver "^6.0.0"
 
-mdi-svelte-ts@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/mdi-svelte-ts/-/mdi-svelte-ts-0.0.4.tgz#adffba23f62fc732801ca0b0cc383f364efdcf49"
-  integrity sha512-gPZCuIRTKgErKJ2xQafI3O2+/Yc6dpIBMSlBm8hgDDBy86a6G7nrAIrKnj/4T4yPYhkGW/wkhF+CpBPZaWmrcA==
+mdi-svelte-ts@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/mdi-svelte-ts/-/mdi-svelte-ts-1.0.0.tgz#80e4c1b151433b4da6d173cbdad6ad5f3d88f9dc"
+  integrity sha512-3t7bgdSmwtmGiWHLQb7CZWo+pHikvHeZJ7JHsAE3Oh/E34AwIndrEWVxIAIdOSYCykg12HWU+aLRdvPyzLOSYQ==
+  dependencies:
+    fuse.js "^6.6.2"
 
 merge2@^1.3.0, merge2@^1.4.1:
   version "1.4.1"
