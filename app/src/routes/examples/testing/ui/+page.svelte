@@ -1,6 +1,5 @@
 <script>
-	import { Icon } from 'mdi-svelte-ts';
-	import { Preview } from '/Users/abeldebruijn/Documents/GitHub/mdi-svelte-ts/src/lib/index.js';
+	import { Icon, Preview } from 'mdi-svelte-ts';
 	import { mdiFullscreen, mdiHeart, mdiHelp } from '@mdi/js';
 	import { PrimeColor } from '$lib/utils/getColor';
 </script>
