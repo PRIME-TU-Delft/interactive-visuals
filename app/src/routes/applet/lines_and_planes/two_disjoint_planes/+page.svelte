@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Vector3 } from 'three';
-	import type { PageData } from './$types';
+	import { page } from '$app/stores';
 
 	import Axis from '$lib/components/Axis.svelte';
 	import Canvas from '$lib/components/Canvas.svelte';
@@ -10,16 +10,15 @@
 	import { PrimeColor } from '$lib/utils/getColor';
 	import { PlaneSegments } from '$lib/utils/Segments';
 
-	export let data: PageData;
-
 	const normal = new Vector3(1, 3, 1).normalize();
 	const sliders = [new Slider(0, -5, 5, 1).red(), new Slider(1, -5, 5, 1).yellow()];
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>
-	{#if data.figure}
-		<div>Figure {data.figure}</div>
+	{#if $page.url.searchParams.has('figure')}
+		<div>Figure {$page.url.searchParams.get('figure')}</div>
 	{/if}
+
 	<div>Two planes without a common point in common.</div>
 
 	<!-- TODO: make colliding planes auto detected -->
