@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Vector3 } from 'three';
-	import { page } from '$app/stores';
 
 	import Axis from '$lib/components/Axis.svelte';
 	import Canvas from '$lib/components/Canvas.svelte';
@@ -15,10 +14,6 @@
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>
-	{#if $page.url.searchParams.has('figure')}
-		<div>Figure {$page.url.searchParams.get('figure')}</div>
-	{/if}
-
 	<div>Two planes without a common point in common.</div>
 
 	<!-- TODO: make colliding planes auto detected -->
