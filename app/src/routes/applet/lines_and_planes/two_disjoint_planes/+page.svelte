@@ -15,10 +15,6 @@
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>
-	{#if $page.url.searchParams.has('figure')}
-		<div>Figure {$page.url.searchParams.get('figure')}</div>
-	{/if}
-
 	<div>Two planes without a common point in common.</div>
 
 	<!-- TODO: make colliding planes auto detected -->

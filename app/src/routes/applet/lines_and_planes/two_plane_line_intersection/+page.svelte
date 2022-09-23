@@ -15,9 +15,6 @@
 </script>
 
 <Canvas {sliders} let:sliderValues={[x, y]}>
-	{#if $page.url.searchParams.has('figure')}
-		<div>Figure {$page.url.searchParams.get('figure')}</div>
-	{/if}
 	<div>Two planes with a line of intersection.</div>
 
 	<Vector
