@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Vector3 } from 'three';
-	import { page } from '$app/stores';
 
 	import Axis from '$lib/components/Axis.svelte';
 	import Canvas from '$lib/components/Canvas.svelte';
