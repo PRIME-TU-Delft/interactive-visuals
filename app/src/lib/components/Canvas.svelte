@@ -13,6 +13,7 @@
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 	import { sceneKey } from '$lib/utils/sceneKey';
 	import type Slider from '$lib/utils/slider';
+	import { CSS2DRenderer } from '$lib/utils/CSS2DRenderer';
 
 	import SvelteSlider from '$lib/components/Slider.svelte';
 	import RoundButton from '$lib/components/RoundButton.svelte';
@@ -23,13 +24,15 @@
 	export let sliders: readonly Slider[] = []; // Enfore with typescript 0 - 3 sliders
 
 	let sceneEl: HTMLDivElement;
-	let el: HTMLCanvasElement;
+	let canvasEl: HTMLCanvasElement;
+	let labelEl: HTMLDivElement;
 	let width: number; // Width of scene
 	let height: number; // Height of scene
 
 	const scene = new Scene(); // Global THREE scene
 	let camera: PerspectiveCamera | OrthographicCamera; // Camera as perspective camera
 	let renderer: WebGLRenderer; // Renderer as WebGL renderer
+	let labelRenderer: CSS2DRenderer; // Renderer for labels
 	let controls: OrbitControls; // Orbit controls - to pan arround the scene
 	let camPos: Vector3 = new Vector3(3.5, 2.8, 3.5);
 
@@ -47,7 +50,7 @@
 	 * Resize canvas if window size changes.
 	 */
 	function resize() {
-		if (!camera || !renderer) return;
+		if (!camera || !renderer || !labelRenderer) return;
 
 		if (camera.type == 'PerspectiveCamera') {
 			// ensure camera is a perspective camera
@@ -64,6 +67,7 @@
 		camera.updateProjectionMatrix();
 
 		renderer.setSize(width, height);
+		labelRenderer.setSize(width, height);
 	}
 
 	/**
@@ -72,6 +76,7 @@
 	function animate() {
 		requestAnimationFrame(animate);
 		renderer.render(scene, camera);
+		labelRenderer.render(scene, camera);
 
 		if (camera && camera.position.x != camPos.x) {
 			camPos.copy(camera.position);
@@ -105,12 +110,22 @@
 
 	function createScene() {
 		scene.background = new Color('#ffffff');
-		renderer = new WebGLRenderer({ antialias: true, canvas: el });
-		controls = new OrbitControls(camera, renderer.domElement);
+		renderer = new WebGLRenderer({ antialias: true, canvas: canvasEl });
+		renderer.setPixelRatio(window.devicePixelRatio);
+
+		// Render layer for displaying 2d text in a 3d scene
+		labelRenderer = new CSS2DRenderer({ element: labelEl });
+		labelRenderer.setSize(window.innerWidth, window.innerHeight);
+		labelRenderer.domElement.className = 'labelRenderer';
+		labelRenderer.domElement.style.position = 'absolute';
+		labelRenderer.domElement.style.top = '0px';
+		// document.body.prepend(labelRenderer.domElement);
+
+		controls = new OrbitControls(camera, labelRenderer.domElement);
 		controls.enablePan = enablePan;
-		controls.maxDistance = 10;
+		controls.maxDistance = 15;
 		controls.minDistance = 1;
-		controls.maxZoom = 20;
+		controls.maxZoom = 30;
 		controls.minZoom = 1;
 
 		reset();
@@ -137,8 +152,11 @@
 </script>
 
 <svelte:window bind:innerWidth={width} bind:innerHeight={height} on:resize={resize} />
+
+<div class="labelEl" bind:this={labelEl} />
+
 <div bind:this={sceneEl}>
-	<canvas bind:this={el} />
+	<canvas bind:this={canvasEl} />
 
 	<!-- Explain panel -->
 	<div

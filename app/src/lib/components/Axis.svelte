@@ -70,8 +70,8 @@
 <!-- Number indecators -->
 {#if !hideNumbers}
 	{#each smallIndecators as indecator}
-		<Label title={'' + indecator} position={new Vector3(indecator, -0.1, 0)} />
-		<Label title={'' + indecator} position={new Vector3(-0.1, indecator, 0)} />
-		<Label title={'' + indecator} position={new Vector3(0, -0.1, indecator)} />
+		<Label opacity={0.7} position={new Vector3(indecator, -0.1, 0)}>{indecator}</Label>
+		<Label opacity={0.7} position={new Vector3(-0.1, indecator, 0)}>{indecator}</Label>
+		<Label opacity={0.7} position={new Vector3(0, -0.1, indecator)}>{indecator}</Label>
 	{/each}
 {/if}
