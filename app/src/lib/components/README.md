@@ -44,7 +44,7 @@ Next we define the lifecicle of the component. This is where the mayoratity of c
 
 - `onMount()`: This is where we initialize the component. This is where we add the mesh to the **scene**, add event listeners, etc. Adding a mesh is done by calling `scene.add(mesh)`.
 - `beforeUpdate()`: This is where we update the component before the next frame is rendered. This is where we update the mesh, update the geometry, and material
-- `onDestroy()`: The main purpose for onDestory is to remove the mesh from the scene and remove event listeners. If some work needs to be saved, you could prevent the window from closing and save the work. Removing a mesh is done by calling `scene.remove(mesh)`.
+- `onDestroy()`: The main purpose for onDestroy is to remove the mesh from the scene and remove event listeners. If some work needs to be saved, you could prevent the window from closing and save the work. Removing a mesh is done by calling `scene.remove(mesh)`.
 
 ## 5. Html template and slots
 
