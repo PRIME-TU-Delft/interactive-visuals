@@ -117,12 +117,13 @@
 
 {#if label.title}
 	<SvelteLabel
-		title={label.title}
 		size={label.size}
 		strokeColor={label.strokeColor}
 		strokeWidth={label.strokeWidth}
 		position={endPosition.clone().add(new Vector3(radius, radius, 0))}
-	/>
+	>
+		{label.title}
+	</SvelteLabel>
 {/if}
 
 <slot {endPosition} />

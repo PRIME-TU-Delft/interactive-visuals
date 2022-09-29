@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, setContext } from 'svelte';
-	import { mdiCog, mdiRestart } from '@mdi/js';
+	import { mdiCog, mdiPause, mdiRestart } from '@mdi/js';
 
 	import {
 		Color,
@@ -22,12 +22,15 @@
 	export let enablePan = false;
 	export let disableUI = false;
 	export let sliders: readonly Slider[] = []; // Enfore with typescript 0 - 3 sliders
+	export let title = '';
+	export let autoPlay = false;
 
 	let sceneEl: HTMLDivElement;
 	let canvasEl: HTMLCanvasElement;
 	let labelEl: HTMLDivElement;
 	let width: number; // Width of scene
 	let height: number; // Height of scene
+	let isPlaying = autoPlay;
 
 	const scene = new Scene(); // Global THREE scene
 	let camera: PerspectiveCamera | OrthographicCamera; // Camera as perspective camera
@@ -38,6 +41,7 @@
 
 	const FRUSTRUM_SIZE = 10; // Size of the frustum
 
+	$: aspect = height > 0 ? width / height : 1; // Aspect ratio of the scene
 	$: sliderValues = sliders.map((s) => s.value);
 
 	// Set context for all children to use the same scene
@@ -54,10 +58,8 @@
 
 		if (camera.type == 'PerspectiveCamera') {
 			// ensure camera is a perspective camera
-			camera.aspect = width / height;
+			camera.aspect = aspect;
 		} else {
-			// ensure camera is an orthographic camera
-			const aspect = width / height;
 			camera.left = (-FRUSTRUM_SIZE * aspect) / 2;
 			camera.right = (FRUSTRUM_SIZE * aspect) / 2;
 			camera.top = FRUSTRUM_SIZE / 2;
@@ -71,10 +73,11 @@
 	}
 
 	/**
-	 * Ubdate canvas with new information
+	 * Update canvas with new information
 	 */
 	function animate() {
-		requestAnimationFrame(animate);
+		if (isPlaying) requestAnimationFrame(animate);
+
 		renderer.render(scene, camera);
 		labelRenderer.render(scene, camera);
 
@@ -97,7 +100,6 @@
 	}
 
 	function setupOrthographicCamera() {
-		const aspect = width / height;
 		camera = new OrthographicCamera(
 			(FRUSTRUM_SIZE * aspect) / -2,
 			(FRUSTRUM_SIZE * aspect) / 2,
@@ -144,6 +146,15 @@
 		createScene();
 	}
 
+	function playScene() {
+		isPlaying = true;
+		animate();
+	}
+
+	function pauseScene() {
+		isPlaying = false;
+	}
+
 	onMount(() => {
 		setupPerspectiveCamera();
 
@@ -156,14 +167,29 @@
 <div class="labelEl" bind:this={labelEl} />
 
 <div bind:this={sceneEl}>
+	{#if !isPlaying}
+		<div
+			class="fixed w-full h-full bg-slate-900/50 cursor-pointer backdrop-grayscale"
+			on:click={playScene}
+		/>
+	{/if}
+
 	<canvas bind:this={canvasEl} />
 
 	<!-- Explain panel -->
-	<div
-		class="fixed px-4 m-4 h-12 top-2 bg-slate-900 rounded flex gap-2 justify-center items-center text-slate-100"
-	>
-		<slot {scene} {camera} {sliderValues} />
-	</div>
+	{#if title || !isPlaying}
+		<div
+			class="fixed px-4 m-4 h-12 top-2 bg-slate-900 rounded flex gap-2 justify-center items-center text-slate-100"
+		>
+			{#if !isPlaying}
+				Click to start playing scene {title ? ' - ' + title : ''}
+			{:else}
+				{title}
+			{/if}
+		</div>
+	{/if}
+
+	<slot {scene} {camera} {sliderValues} />
 
 	<!-- Slider Panel -->
 	{#if !disableUI && sliders.length > 0 && sliders.length <= 3}
@@ -176,6 +202,10 @@
 
 	<!-- Options panel -->
 	<div class="fixed right-4 bottom-4 w-12 flex flex-col gap-2">
+		{#if isPlaying}
+			<RoundButton icon={mdiPause} on:click={pauseScene} />
+		{/if}
+
 		<RoundButton icon={mdiCog} on:click={togglePerspective} />
 		<RoundButton icon={mdiRestart} on:click={reset} />
 
