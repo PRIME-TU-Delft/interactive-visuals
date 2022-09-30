@@ -14,6 +14,20 @@ npm create svelte@latest
 npm create svelte@latest my-app
 ```
 
+## Storybook
+
+To run storybook, make sure you have node version 16 running (18 is not supported yet). To use node 16 you can use nvm.
+
+```bash
+nvm use 16
+```
+
+Then run storybook
+
+```bash
+npm run storybook
+```
+
 ## Developing
 
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
